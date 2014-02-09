@@ -1,0 +1,350 @@
+var version = '0.11.4'
+
+  , child    = require("child_process")
+  , fs       = require("fs")
+
+  , twitter  = require('./mytwitter')
+  , curl     = require('./curl')
+  , chat     = require('./chat')
+
+  , tenki    = require("./tenki")
+  , getAnime = require("./anime")
+  , runJ     = require('./j')
+  , twitpic  = require('./twitpic')
+  , kasitime = require('./kasitime')
+  , wc       = require('./wc_thesis')
+  , shindan  = require('./shindan').shindan
+  , tenkei   = require('./shindan').tenkei
+  , memoProc = require('./memo')
+
+  , happiness= require('./happiness')
+
+  , esc = String.fromCharCode(27)
+  ;
+
+var twit = twitter.twit
+  , PosttoTwitter = twitter.PosttoTwitter
+  , ReplytoTwitter = twitter.ReplytoTwitter
+  , Favorite = twitter.Favorite
+  ;
+
+// ----------------------------------------------------
+
+var randFav = 0.002;
+
+function strTime() {
+    var t = new Date();
+    return [t.getHours(), t.getMinutes(), t.getSeconds()].join(':');
+}
+
+function beginWith (text, pre) { return text.indexOf(pre) == 0; }
+
+String.prototype.toString = function() {
+  return '"' + this + '"';
+};
+Object.prototype.toString = function() {
+  var ret = [];
+  for (var i in this) {
+    if (this.hasOwnProperty(i)) {
+      ret.push('\'' + i + '\' :' + this[i].toString() + '');
+    }
+  }
+  return '({' + ret.join(", ") + '})';
+};
+Array.prototype.toString = function() {
+  return '[' + this.map(function(x){return x.toString()}).join(", ") + ']';
+};
+
+// -- util for Twitter -------------------------------
+
+function test(name, status_id) {
+    console.log("# test");
+    ReplytoTwitter(name, "eliza ver." + version + " ("+strTime()+")", status_id)
+}
+
+function post_tenki(name, loc, status_id, source) {
+  if (!loc && source === 'ツイッターするやつ') loc = '札幌';
+  tenki(name, loc, function(result) {
+    ReplytoTwitter(name, result, status_id);
+  });
+}
+
+function System(com, name, status_id) {
+    console.log("System $", com);
+    child.exec(com, function (stderr,stdout,stdin) {
+        ReplytoTwitter(name, d(stdout, stderr) , status_id)
+    });
+    // where
+    function d(o, e){ var e2 = e==null ? "" : ("\nerr: "+e); return o+e2 }
+}
+
+function Factor(n, name, status_id) {
+    System("factor " + parseInt(n), name, status_id);
+}
+
+function tosho(name, status_id) {
+    curl("http://www.lib.u-tokyo.ac.jp/sogoto/", 'GET', function (body) {
+            body = body.slice(body.indexOf("opening")+8, body.length)
+            body = body.slice(0, body.indexOf("<"))
+            var msg = body + " (see http://goo.gl/UTNvN)"
+            ReplytoTwitter(name, msg, status_id);
+        });
+}
+
+function suicide() {
+  console.log("Good bye, world");
+  post_tenki('cympf', undefined, 425590732485709824, 'web');
+  wc.wc(function(r) { PosttoTwitter('@cympf ' + r) }, true);
+  process.exit();
+}
+
+//-----------------------------------------------
+// stream living?
+
+var last_time = (new Date()).getTime();
+setInterval(function() {
+  var now = (new Date()).getTime();
+  var tmin = (now - last_time) / 1000 / 60;
+
+  if (tmin > 10) {
+    console.log('ji-ketsu');
+    suicide();
+  }
+}, 60*1000);
+
+
+//-----------------------------------------------
+
+
+//-----------------------------------------------
+
+(function setup() {
+
+  twit.stream('user', function(stream) {
+
+    stream.on('delete', function(data) {
+      // data.status.id_str
+    });
+
+    stream.on('disconnect', function(data) {
+      console.log(data.reason);
+      suicide();
+    });
+
+    stream.on('data', function(data) {
+
+      if (!data || !data.user || !data.text) { return }
+
+        last_time = (new Date()).getTime();
+
+        var user = data.user
+          , name = user.screen_name
+          , nick = user.name
+          , text = data.text
+                       .replace(/&lt;/g, "<")
+                       .replace(/&gt;/g, ">")
+                       .replace(/&amp;/g, "&")
+                       .replace(/　/g, " ")
+          , status_id = data.id_str
+          , source = data.source.slice(data.source.indexOf(">")+1
+                                     , data.source.length-4)
+          ;
+
+        var raw_text = text;
+        text = 
+          (function remove_comment(s, k) {
+              if (s.indexOf(k) < 0) return s;
+              return s.slice(0, s.indexOf(k)).trim();
+          })(text, ";");
+
+        colored =
+            esc+"[34m@" + name + " / " + nick + esc+"[m" +
+            " ; " + esc+"[33mvia " + source + esc+"[m" +
+            " ; " + strTime() + "\n" +
+            text;
+
+        console.log(colored);
+
+        // ----- processes for command ---------------------
+
+        function isMe(name) {
+          return ["ampeloss","cympf", "rugxe", "ide1o"].indexOf(name) !== -1;
+        }
+
+        function isReplyToEliza (text) {
+          return /^@ampeloss/.test(text)
+        }
+
+        if (!isMe(name) && randFav > Math.random()) {
+          var t = 4000 + Math.floor(Math.random()*300)*100;
+          setTimeout(function() { Favorite(status_id) }, t);
+        }
+
+        // other commands
+
+        /*
+        if (name!=="ampeloss" && isReplyToEliza(text)) {
+          var body = text.replace(/@[a-zA-Z0-9:]* /g, '')
+          var time =
+            2000 + (Math.pow(Math.random(), 100) * 30000)|0 ;
+          console.log("# catch reply to me", time, body);
+          setTimeout(function() {
+            chat.reply(body, function(result) {
+              ReplytoTwitter(name, result, status_id) });
+          }, time);
+          return;
+        }
+        */
+
+        if (isMe(name) && beginWith(text, ":?")) {
+          var com = text.slice(2);
+            console.log(":eval", com);
+          try {
+            var it = eval(com);
+            ReplytoTwitter(name, it + "", status_id);
+          } catch(e) {
+            ReplytoTwitter(name, "err in eval : "+e+" "+strTime(), status_id);
+          }
+          return;
+        }
+        else if (isMe(name) && beginWith(text, ":!hoge")) {
+          com = 'bash ~/Dropbox/hoge';
+          System(com, name, status_id);
+          return;
+        }
+        else if (isMe(name) && beginWith(text, ":!")) {
+          com = text.slice(2);
+          console.log(":!", com);
+          System(com, name, status_id);
+          return;
+        }
+        else if (beginWith(text, ":emitisak")) {
+          kasitime(function(l) { ReplytoTwitter(name, l, status_id) });
+        }
+        else if (beginWith(text, ":j ")) {
+
+          var code = raw_text.slice(3).split('\n')[0]
+            , fname = "/tmp/jcode";
+          require("fs").writeFileSync(fname, code);
+          runJ(fname
+              , function(result) {
+                  ReplytoTwitter(name, "\n"+result, status_id) });
+          return;
+        }
+        else if (beginWith(text, ":anime")) {
+          getAnime(function(ls) {
+            console.log('anime');
+            console.log(ls);
+            ReplytoTwitter(name, ls, status_id);
+          });
+          return;
+        }
+        else if (beginWith(text, ":wc!")) {
+          wc.wc(function(r) { ReplytoTwitter(name, r, status_id) }, true);
+        }
+        else if (beginWith(text, ":wc")) {
+          wc.wc(function(r) { ReplytoTwitter(name, r, status_id) }, false);
+        }
+        else if (beginWith(text, ":memo")) {
+          memoProc(text, name, status_id, ReplytoTwitter);
+        }
+        else if (beginWith(text, ":tenkie")) {
+          console.log("# : tenki + tenkei")
+          tenkei(function(res) { ReplytoTwitter(name, res, status_id) });
+          post_tenki(name, text.split(" ")[1], status_id, source);
+          return ;
+        }
+        else if (beginWith(text, ":tenki")) {
+          return post_tenki(name, text.split(" ")[1], status_id, source)
+        }
+        else if (beginWith(text, ":twitpic")) {
+          twitpic(function(url) { ReplytoTwitter(name, url, status_id) });
+          return;
+        }
+        else if (text.indexOf("天気教え")>=0 || text.indexOf("洗濯物占")>=0) {
+          return post_tenki(name, undefined, status_id, source);
+          return;
+        }
+        else if (beginWith(text, ":factor")) {
+          return Factor(text.split(" ")[1], name, status_id);
+        }
+        else if (beginWith(text, ":tosho")) {
+          return tosho(name, status_id)
+        }
+        else if (/kositu|koshitu|koshitsu|kositsu/.test(text)) {
+          var lobby_id = 1000 + parseInt(Math.random()*7000)
+          ReplytoTwitter(name, "http://tenhou.net/0/?L" + lobby_id, status_id);
+          return;
+        }
+        else if (/tenkei|TENKEI|тенкей|テンケイ|てんけい|天啓|天恵|添景|点景|天刑|天渓/.test(text)) {
+          tenkei(function(res) { ReplytoTwitter(name, res, status_id) });
+          return;
+        }
+        else if (beginWith(text, ":neko") || beginWith(text, ":neco")) {
+          var number = 322469
+            , s_name = (function(x){return x?x:name})(text.split(" ")[1]);
+          shindan(number, name, s_name, function(res) { ReplytoTwitter(name, res, status_id) });
+          return;
+        }
+        else if (beginWith(text, ":tateru")) {
+          var number = 196616
+            , s_name = (function(x){return x?x:name})(text.split(" ")[1]);
+          shindan(number, name, s_name, function(res) { ReplytoTwitter(name, res, status_id) });
+          return;
+        }
+        else if (beginWith(text, ":shindan ")) {
+          var number = parseInt(text.split(" ")[1].trim());
+          var s_name = (function(x){return x?x:name})(text.split(" ")[2]);
+          shindan(number, name, s_name, function(res) { ReplytoTwitter(name, res, status_id) });
+          return;
+        }
+        else if (beginWith(text, ":test")) {
+          return test(name);
+        }
+        else if (beginWith(text, ":hap") || beginWith(text, ":pre")) {
+          happiness(function(num, when, tit, epi) {
+            var txt =
+              "第num話「tit」when epi"
+               .replace("num", num)
+               .replace("tit", tit)
+               .replace("when", when)
+               .replace("epi", epi);
+            ReplytoTwitter(name, txt, status_id, "cut");
+          });
+          return;
+        }
+        else if (text.indexOf("オハヨウゴザイマース") >= 0) {
+          console.log("# good morning");
+          ReplytoTwitter(name, "┗(⌒)(╬*☻-☻*╬)(⌒)┛＜ゲットアウト！（出ていけ！）", status_id);
+        }
+        else if (! data.user.protected ) {
+          chat.pop_or_push(text, PosttoTwitter);
+        }
+
+    });
+
+    stream.on('end', function() {
+      console.log("### stream end")
+      suicide();
+    });
+
+    stream.on('destroy', function() {
+      console.log("### stream destroy")
+      suicide();
+    });
+
+    stream.on("close", function() {
+      console.log("### stream close")
+      suicide();
+    });
+
+    stream.on("error", function (e) {
+      console.log("### emitted an error", e);
+      suicide();
+    });
+
+  });
+
+  console.log("### stream start");
+
+})();

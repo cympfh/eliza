@@ -1,0 +1,69 @@
+{
+  "url" : {
+    "北海道"   : "JAXX0078",
+    "hokkaido" : "JAXX0078",
+    "札幌"     : "JAXX0078",
+    "sapporo"  : "JAXX0078",
+    "秋田"     : "JAXX0001",
+    "akita"    : "JAXX0001",
+    "青森"     : "JAXX0004",
+    "新潟"     : "JAXX0061",
+    "佐渡"     : "9774990",
+    "佐渡島"   : "9774990",
+    "佐渡ヶ島" : "9774990",
+    "sado"     : "9774990",
+    "niigata"  : "JAXX0061",
+    "東京"     : "JAXX0085",
+    "tokyo"    : "JAXX0085",
+    "横浜"     : "JAXX0099",
+    "yokohama" : "JAXX0099",
+    "千葉"     : "JAXX0006",
+    "chiba"    : "JAXX0006",
+    "静岡"     : "JAXX0107",
+    "sizuoka"  : "JAXX0107",
+    "shizuoka" : "JAXX0107",
+    "石川"     : "JAXX0030",
+    "ishikawa" : "JAXX0030",
+    "岐阜"     : "JAXX0012",
+    "gif"      : "JAXX0012",
+    "滋賀"     : "10204758",
+    "Shiga"    : "10204758",
+    "大阪"     : "JAXX0071",
+    "osaka"    : "JAXX0071",
+    "京都"     : "JAXX0047",
+    "kyoto"    : "JAXX0047",
+    "名古屋"   : "JAXX0057",
+    "神戸"     : "JAXX0040",
+    "kobe"     : "JAXX0040",
+    "広島"     : "JAXX0018",
+    "hiroshima": "JAXX0018",
+    "hirosima" : "JAXX0018",
+    "岡山"     : "JAXX0065",
+    "okayama"  : "JAXX0065",
+    "福岡"     : "JAXX0009",
+    "fukuoka"  : "JAXX0009",
+    "大分"     : "10204496",
+    "oita"     : "10204496",
+    "仙台"     : "JAXX0104",
+    "沖縄"     : "JAXX0058",
+
+    "dummy"    : ""
+  },
+  "address" : {
+      "gomu1kg"       : "秋田"
+    , "gattino123"    : "福岡"
+    , "nyoromo123"    : "福岡"
+    , "_3000world_"   : "福岡"
+    , "himono_"       : "広島"
+    , "chilchil_2030" : "広島"
+    , "perique"       : "大阪"
+    , "perikue"       : "大阪"
+    , "a40san"        : "大阪"
+    , "akio2_"        : "大阪"
+    , "i7sm"          : "神戸"
+    , "amaoto_ptspts" : "名古屋"
+    , "__1927" : "名古屋"
+    , "N_PHANTASIA"   : "札幌"
+    , "yasutomonano"  : "石川"
+  }
+}

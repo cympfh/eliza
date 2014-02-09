@@ -1,0 +1,7 @@
+cp write2VIP.vim write.vim
+cat << EOM >> write.vim
+call s:WriteTextTrim("$1", "$2")
+:q!
+EOM
+vim -S ./write.vim
+rm -f write.vim
