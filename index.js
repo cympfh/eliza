@@ -1,4 +1,4 @@
-var version = '0.11.4'
+var version = '0.11.5'
 
   , child    = require("child_process")
   , fs       = require("fs")
@@ -12,12 +12,11 @@ var version = '0.11.4'
   , runJ     = require('./j')
   , twitpic  = require('./twitpic')
   , kasitime = require('./kasitime')
-  , wc       = require('./wc_thesis')
   , shindan  = require('./shindan').shindan
   , tenkei   = require('./shindan').tenkei
   , memoProc = require('./memo')
-
   , happiness= require('./happiness')
+  , lmgtfy   = require('./lmgtfy')
 
   , esc = String.fromCharCode(27)
   ;
@@ -94,7 +93,6 @@ function tosho(name, status_id) {
 function suicide() {
   console.log("Good bye, world");
   post_tenki('cympf', undefined, 425590732485709824, 'web');
-  wc.wc(function(r) { PosttoTwitter('@cympf ' + r) }, true);
   process.exit();
 }
 
@@ -239,12 +237,6 @@ setInterval(function() {
           });
           return;
         }
-        else if (beginWith(text, ":wc!")) {
-          wc.wc(function(r) { ReplytoTwitter(name, r, status_id) }, true);
-        }
-        else if (beginWith(text, ":wc")) {
-          wc.wc(function(r) { ReplytoTwitter(name, r, status_id) }, false);
-        }
         else if (beginWith(text, ":memo")) {
           memoProc(text, name, status_id, ReplytoTwitter);
         }
@@ -312,6 +304,12 @@ setInterval(function() {
             ReplytoTwitter(name, txt, status_id, "cut");
           });
           return;
+        }
+        else if (beginWith(text, ":lmg")) {
+          var q = text.split(' ').slice(1).join(' ');
+          q = q.replace(/[\r\n]/g, '');
+          q = q.replace(/[\']/g, '%09');
+          lmgtfy(q, function(url) { ReplytoTwitter(name, url, status_id) });
         }
         else if (text.indexOf("オハヨウゴザイマース") >= 0) {
           console.log("# good morning");

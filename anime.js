@@ -24,7 +24,7 @@ function getAnime(cont) {
         ;
 
       var at = parseInt(t0);
-      if (5 <= at && at <= 21) return;
+      if (5 <= at && at <= 18) return;
 
       if (!tokyo(kyoku)) return;
       msg +=
