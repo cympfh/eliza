@@ -4,8 +4,6 @@ var curl = require('./curl')
 
 module.exports = happiness;
 
-happiness(console.log)
-
 function happiness(cont) {
 
   curl(url, "GET", function(html) {
@@ -26,7 +24,7 @@ function happiness(cont) {
         flg = 3;
         when = removeTag(l);
       }
-      else if (flg == 3 && l.indexOf('<h2 ') === 0) {
+      else if (flg == 3 && l.indexOf('<h2') === 0) {
         flg = 4;
         tit = removeTag(l.slice(l.indexOf('</span>')));
       }

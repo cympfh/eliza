@@ -7,7 +7,6 @@ module.exports = getAnime;
 // getAnime(console.log);
 
 function getAnime(cont) {
-  var ct = (new Date()).getHours();
   getAnimeList(parse);
 
   function parse(fname) {
@@ -55,10 +54,9 @@ function getAnimeList(cont) {
   var d = new Date()
     , hour  = d.getHours() 
     ;
-  if (hour < 5) {
-    d.setDate(-1);
-  }
+  // if (hour < 5) { d.setDate(-1); } // 必要なかった??
   var fname = "/tmp/anime" + (d.getDate());
+  console.log('read', fname);
   fs.exists(fname, function(exists) {
     if (exists) {
       cont(fname);
@@ -123,6 +121,7 @@ function kyoku_alias(name) {
   var aliases = {
       "TOKYO MX" : "MX"
     , "テレビ東京" : "テレ東"
+    , "日本テレビ" : "日テレ"
   };
   if (name in aliases) return aliases[name];
   else return name;
