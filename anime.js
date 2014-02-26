@@ -2,65 +2,101 @@ var exec = require("child_process").exec
   , fs   = require("fs")
   ;
 
-module.exports = getAnime;
-
-// getAnime(console.log);
-
 function getAnime(cont) {
-  getAnimeList(parse);
+
+  function tokyo(x) {
+    if (x.indexOf('BS-') !== -1) { return false; }
+    var ls =
+      [ "TOKYO MX", "テレビ東京", "TBS"
+      , "フジテレビ", "日本テレビ", "テレビ朝日" ];
+    ls.forEach(function (l) { if (x.indexOf(l) !== -1) { return true; } });
+    return false;
+  }
+
+  function kyoku_alias(name) {
+    var aliases = {
+        "TOKYO MX" : "MX"
+      , "テレビ東京" : "テレ東"
+      , "日本テレビ" : "日テレ"
+    };
+    if (aliases.hasOwnProperty(name)) {
+      return aliases[name];
+    }
+    return name;
+  }
 
   function parse(fname) {
     var ls = fs.readFileSync(fname, 'utf8').split('\n');
-    ls = ls.filter(function(x){return !!x});
+    ls = ls.filter(function(x){return !!x;});
 
     var msg = '';
     ls.forEach(function(l) {
       l = l.split(';');
       var t0 = l[0]
-        , t1 = l[1]
+        // , t1 = l[1]
         , kyoku = l[2]
         , title = l[3]
         ;
 
-      var at = parseInt(t0);
-      if (5 <= at && at <= 18) return;
+      var at = parseInt(t0, 10);
+      if ((5 <= at && at <= 18) || !tokyo(kyoku)) {
+        return;
+      }
 
-      if (!tokyo(kyoku)) return;
       msg +=
         "\nt0; kyoku; title"
           .replace("t0", t0)
           //.replace("t1", t1)
           .replace("kyoku", kyoku_alias(kyoku))
           .replace("title", title.slice(0,10))
+      ;
 
     });
     cont(msg);
   }
-}
 
-function tokyo(x) {
-  if (x.indexOf('BS-') !== -1) return false;
-  var ls = [
-       "TOKYO MX", "テレビ東京", "TBS"
-     , "フジテレビ", "日本テレビ"
-     , "テレビ朝日"
-  ];
-  for (var i=0; i<ls.length; ++i)
-    if (x.indexOf(ls[i]) !== -1) return true;
-  return false;
+  getAnimeList(parse);
 }
 
 function getAnimeList(cont) {
+
+  function split(ls, name) {
+    var ret = [];
+    var idx, idx2;
+    for (;;) {
+      idx = ls.indexOf("<"+name);
+      if (idx === -1) break;
+      var mark = "</"+name+">";
+      idx2 = ls.indexOf(mark, idx);
+      if (idx2 === -1) break;
+      ret.push(ls.slice(idx, idx2+mark.length));
+      ls = ls.slice(idx2+mark.length);
+    }
+    return ret;
+  }
+
+  function first(x) {
+    x = x.slice(0, x.indexOf('</'));
+    x = x.slice(x.lastIndexOf('>')+1);
+    return x;
+  }
+
   var d = new Date()
     , hour  = d.getHours() 
     ;
   // if (hour < 5) { d.setDate(-1); } // 必要なかった??
   var fname = "/tmp/anime" + (d.getDate());
+
   console.log('read', fname);
+
   fs.exists(fname, function(exists) {
+
     if (exists) {
+
       cont(fname);
+
     } else {
+
       var url = "http://www.posite-c.com/anime/day/";
       exec( "curl "+url+"|grep \"<table id=\\\"today\\\"\" > /tmp/ls"
           , function() {
@@ -94,35 +130,8 @@ function getAnimeList(cont) {
     }
   });
 
-  function split(ls, name) {
-    var ret = [];
-    var idx, idx2;
-    for (;;) {
-      idx = ls.indexOf("<"+name);
-      if (idx === -1) break;
-      var mark = "</"+name+">";
-      idx2 = ls.indexOf(mark, idx);
-      if (idx2 === -1) break;
-      ret.push(ls.slice(idx, idx2+mark.length));
-      ls = ls.slice(idx2+mark.length);
-    }
-    return ret;
-  }
-
-  function first(x) {
-    x = x.slice(0, x.indexOf('</'));
-    x = x.slice(x.lastIndexOf('>')+1);
-    return x;
-  }
-
 }
 
-function kyoku_alias(name) {
-  var aliases = {
-      "TOKYO MX" : "MX"
-    , "テレビ東京" : "テレ東"
-    , "日本テレビ" : "日テレ"
-  };
-  if (name in aliases) return aliases[name];
-  else return name;
-}
+// ---------------------------------------
+
+module.exports = getAnime;

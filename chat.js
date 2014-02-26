@@ -4,7 +4,7 @@ function pop_or_push(text, post) {
 
   function prob_push() {
     var len = ptw.length;
-    return len < 30 ? 0.4 : 12 / len
+    return len < 30 ? 0.1 : 3/len
   }
 
   function prob_pop() {

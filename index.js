@@ -29,7 +29,7 @@ var twit = twitter.twit
 
 // ----------------------------------------------------
 
-var randFav = 0.002;
+var randFav = 0.004;
 
 function strTime() {
     var t = new Date();
@@ -174,7 +174,7 @@ setInterval(function() {
         }
 
         if (!isMe(name) && randFav > Math.random()) {
-          var t = 4000 + Math.floor(Math.random()*300)*100;
+          var t = 9000 + Math.floor(Math.random()*300)*100;
           setTimeout(function() { Favorite(status_id) }, t);
         }
 
@@ -217,10 +217,11 @@ setInterval(function() {
           return;
         }
         else if (beginWith(text, ":emitisak")) {
-          kasitime(function(l) { ReplytoTwitter(name, l, status_id) });
+          kasitime(function(l) {
+            ReplytoTwitter(name, l, status_id) });
         }
-        else if (beginWith(text, ":j ")) {
 
+        else if (beginWith(text, ":j ")) {
           var code = raw_text.slice(3).split('\n')[0]
             , fname = "/tmp/jcode";
           require("fs").writeFileSync(fname, code);
@@ -237,20 +238,26 @@ setInterval(function() {
           });
           return;
         }
+
         else if (beginWith(text, ":memo")) {
           memoProc(text, name, status_id, ReplytoTwitter);
         }
+
         else if (beginWith(text, ":tenkie")) {
           console.log("# : tenki + tenkei")
-          tenkei(function(res) { ReplytoTwitter(name, res, status_id) });
-          post_tenki(name, text.split(" ")[1], status_id, source);
+          tenkei(function(res) {
+            ReplytoTwitter(name, res, status_id) });
+          post_tenki(name, text.split(" ")[1]
+              , status_id, source);
           return ;
         }
         else if (beginWith(text, ":tenki")) {
-          return post_tenki(name, text.split(" ")[1], status_id, source)
+          return post_tenki(name, text.split(" ")[1],
+              status_id, source)
         }
         else if (beginWith(text, ":twitpic")) {
-          twitpic(function(url) { ReplytoTwitter(name, url, status_id) });
+          twitpic(function(url) {
+            ReplytoTwitter(name, url, status_id) });
           return;
         }
         else if (text.indexOf("天気教え")>=0 || text.indexOf("洗濯物占")>=0) {

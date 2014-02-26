@@ -118,5 +118,3 @@ function memoProc(text, name, status_id, reply) {
   }
 }
 
-// memoProc(':memo add "hoge"', 'cympf', 0, console.log)
-memoProc(':memo list', 'rugxe', 0, console.log)
