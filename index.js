@@ -1,4 +1,4 @@
-var version = '0.11.5'
+var version = '0.11.6'
 
   , child    = require("child_process")
   , fs       = require("fs")
@@ -17,6 +17,8 @@ var version = '0.11.5'
   , memoProc = require('./memo')
   , happiness= require('./happiness')
   , lmgtfy   = require('./lmgtfy')
+  , tuple = require('./eng')
+  , bio = require('./bio')
 
   , esc = String.fromCharCode(27)
   ;
@@ -241,6 +243,18 @@ setInterval(function() {
 
         else if (beginWith(text, ":memo")) {
           memoProc(text, name, status_id, ReplytoTwitter);
+        }
+
+        else if (beginWith(text, ":bio ")) {
+          var name = text.split(' ')[1];
+          name = name.trim();
+          if (!name) return;
+          bio(name, function(text) {
+            ReplytoTwitter(name, text, status_id);
+          });
+        }
+        else if (beginWith(text, ":name") || text.indexOf('#name') > -1) {
+          ReplytoTwitter(name, (tuple()).join(' '), status_id);
         }
 
         else if (beginWith(text, ":tenkie")) {
