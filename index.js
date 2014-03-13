@@ -168,7 +168,7 @@ setInterval(function() {
         // ----- processes for command ---------------------
 
         function isMe(name) {
-          return ["ampeloss","cympf", "rugxe", "ide1o"].indexOf(name) !== -1;
+          return ["ampeloss","cympf", "dotclj", "ide1o"].indexOf(name) !== -1;
         }
 
         function isReplyToEliza (text) {
