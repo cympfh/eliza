@@ -1,4 +1,4 @@
-var version = '0.11.6'
+var version = '0.12.0'
 
   , child    = require("child_process")
   , fs       = require("fs")
@@ -168,14 +168,22 @@ setInterval(function() {
         // ----- processes for command ---------------------
 
         function isMe(name) {
-          return ["ampeloss","cympf", "dotclj", "ide1o"].indexOf(name) !== -1;
+          return ["ampeloss","cympf", "undvi", "ide1o"].indexOf(name) !== -1;
         }
 
         function isReplyToEliza (text) {
           return /^@ampeloss/.test(text)
         }
 
+        /*
         if (!isMe(name) && randFav > Math.random()) {
+          var t = 9000 + Math.floor(Math.random()*300)*100;
+          setTimeout(function() { Favorite(status_id) }, t);
+        }
+        */
+        if (randFav > Math.random() &&
+               ( text.indexOf("つら") !== -1
+              || text.indexOf("死") !== -1)) {
           var t = 9000 + Math.floor(Math.random()*300)*100;
           setTimeout(function() { Favorite(status_id) }, t);
         }
@@ -335,6 +343,9 @@ setInterval(function() {
         else if (text.indexOf("オハヨウゴザイマース") >= 0) {
           console.log("# good morning");
           ReplytoTwitter(name, "┗(⌒)(╬*☻-☻*╬)(⌒)┛＜ゲットアウト！（出ていけ！）", status_id);
+        }
+        else if (text.indexOf("田端") >= 0) {
+          setTimeout(function() { PosttoTwitter("田端でバタバタ"); }, 1500);
         }
         else if (! data.user.protected ) {
           chat.pop_or_push(text, PosttoTwitter);
