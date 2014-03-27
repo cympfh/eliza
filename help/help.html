@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="イライザのヘルプ">イライザのヘルプ。</h1>
+<h2 id="イライザとは何か">イライザとは何か。</h2>
+<p>Twitter bot twitter.com/ampeloss</p>
+<h2 id="使い方は何か">使い方は何か</h2>
+<p>一定の書式に従ったツイート(コマンドと呼びます)がイライザのTLに流れたのを 見たら対応する反応、すなわちリプライを行う。</p>
+<h2 id="注意事項">注意事項</h2>
+<ul>
+<li>イライザへのリプライは無視。コマンドを <span class="citation" data-cites="ampeloss">@ampeloss</span> から始めないこと。</li>
+<li>ツイート中に初めて出現した半角セミコロン(;)から改行までは無視する。</li>
+<li>これは、 Twitterにおいて同一文章を短いスパンでツイートできないのを回避するため。</li>
+<li>コマンドは一部の例外を覗いて、半角コロン(:)から始まる。</li>
+<li>コマンドは全てにおいて一行に収めること。二行以上ある場合、たぶんだけど、二行目以降を無視する</li>
+</ul>
+<h2 id="ソースコード">ソースコード</h2>
+<p>コマンドの説明を後に書くけど、ソースコードは以下の通りに公開してるので そちらを見たほうがよいかもしれないし、そちらを自前で動かしてもよい。</p>
+<p>https://github.com/cympfh/eliza</p>
+<h2 id="コマンド一覧-一部かもしれない">コマンド一覧 (一部かもしれない)</h2>
+<h3 id="tenki">:tenki</h3>
+<p>東京の天気を返す。今日と明日の、降水確率、最高気温、最低気温の数字を <a href="http://weather.jp.msn.com/local.aspx?wealocations=wc:JAXX0085">MSN天気予報</a> から持ってくる。詳細な読み方は、そのページと比較すればきっと分かる。</p>
+<h3 id="tenki-loc">:tenki [loc]</h3>
+<p>locは地名。勘の悪い人は [ ] 自体を含めて書きそうだけど、locが変数だって意味だよ。 地名一覧は tenki.json (https://github.com/cympfh/eliza/blob/master/tenki.json) を参照のこと。</p>
+<pre><code>:tenki 佐渡</code></pre>
+<h3 id="tenkei">:tenkei</h3>
+<h3 id="anime">:anime</h3>
+<p>東京における、今日のアニメ一覧を返す。 放送時間が昼間なのはおそらく興味ないものだろうから消してる。</p>
+<h3 id="j-j-code">:j [j-code]</h3>
+<h3 id="twitpic">:twitpic</h3>
+<h3 id="shindan-id-screen_name">:shindan [id] [screen_name]</h3>
+<p>亜種として</p>
+<pre><code>:neco
+:tateruze</code></pre>
+<p>など。</p>
+<h3 id="memo-command">:memo [command]</h3>
+<pre><code>:memo</code></pre>
+<p>と打つと、:memo についての詳細なヘルプを返す。</p>
+<h3 id="lmgtfy-検索ワード">:lmgtfy [検索ワード]</h3>
+<p>Let me Google that for you</p>
+<h3 id="lgtm">:lgtm</h3>
+<p>Look good to me</p>
+<h3 id="bio-screen_name">:bio [screen_name]</h3>
+<pre><code>:bio ampeloss</code></pre>
+<h2 id="作者">作者</h2>
+<p>cympfh@gmail.com</p>
+</body>
+</html>

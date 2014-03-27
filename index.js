@@ -230,6 +230,11 @@ setInterval(function() {
           System(com, name, status_id);
           return;
         }
+        else if (beginWith(text, ":help")) {
+          var url = "https://www.dropbox.com/s/9is9rabnnbqg88s/help.html";
+          PosttoTwitter('help doc: ' + url);
+          ReplytoTwitter('read this page');
+        }
         else if (beginWith(text, ":emitisak")) {
           kasitime(function(l) {
             ReplytoTwitter(name, l, status_id) });
