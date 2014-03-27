@@ -1,3 +1,4 @@
+#!/usr/local/bin/node
 var version = '0.12.0'
 
   , child    = require("child_process")
@@ -16,7 +17,10 @@ var version = '0.12.0'
   , tenkei   = require('./shindan').tenkei
   , memoProc = require('./memo')
   , happiness= require('./happiness')
+  // let me Google
   , lmgtfy   = require('./lmgtfy')
+  // look good to me
+  , lgtm     = require('./lgtm')
   , tuple = require('./eng')
   , bio = require('./bio')
 
@@ -339,6 +343,9 @@ setInterval(function() {
           q = q.replace(/[\r\n]/g, '');
           q = q.replace(/[\']/g, '%09');
           lmgtfy(q, function(url) { ReplytoTwitter(name, url, status_id) });
+        }
+        else if (beginWith(text, ":lgtm")) {
+          lgtm(function(url) { ReplytoTwitter(name, url, status_id) });
         }
         else if (text.indexOf("オハヨウゴザイマース") >= 0) {
           console.log("# good morning");
