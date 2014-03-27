@@ -233,7 +233,7 @@ setInterval(function() {
         else if (beginWith(text, ":help")) {
           var url = "https://www.dropbox.com/s/9is9rabnnbqg88s/help.html";
           PosttoTwitter('help doc: ' + url);
-          ReplytoTwitter('read this page');
+          ReplytoTwitter(name, 'read this page', status_id);
         }
         else if (beginWith(text, ":emitisak")) {
           kasitime(function(l) {

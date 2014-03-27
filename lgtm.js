@@ -9,3 +9,4 @@ function lgtm(cont) {
     cont(data.actualImageUrl);
   });
 }
+module.exports = lgtm;
