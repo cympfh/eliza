@@ -69,6 +69,23 @@ function parse (buf, loc) {
         " ((" + tomor_rain.join(" ") + ") (" + tomor_temp.join(" ") + "))\r\n" +
         "  (" + loc + " . " + timestamp + "))";
   ret = ret.replace(/&#176;C/g, " deg-C");
+
+  // write_out(today_rain, today_temp, tomor_rain, tomor_temp);
+
   return ret;
 }
 
+function write_out(rain, temp, rain2, temp2) {
+  var data;
+  if ((new Date()).getHours() < 18) {
+    data = rain.join(' ') + ', ' + temp.join(' ');
+    data = 'today: ' + data;
+  } else {
+    data = rain2.join(' ') + ', ' + temp2.join(' ');
+    data = 'tomorrow: ' + data;
+  }
+  data = data.replace(/&#176;C/g, " deg-C");
+
+  require('fs').writeFileSync(process.env.HOME + '/Dropbox/cympfh/screen_script/tenki.txt'
+      , data);
+}

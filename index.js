@@ -44,22 +44,6 @@ function strTime() {
 
 function beginWith (text, pre) { return text.indexOf(pre) == 0; }
 
-String.prototype.toString = function() {
-  return '"' + this + '"';
-};
-Object.prototype.toString = function() {
-  var ret = [];
-  for (var i in this) {
-    if (this.hasOwnProperty(i)) {
-      ret.push('\'' + i + '\' :' + this[i].toString() + '');
-    }
-  }
-  return '({' + ret.join(", ") + '})';
-};
-Array.prototype.toString = function() {
-  return '[' + this.map(function(x){return x.toString()}).join(", ") + ']';
-};
-
 // -- util for Twitter -------------------------------
 
 function test(name, status_id) {
@@ -359,9 +343,11 @@ setInterval(function() {
         else if (text.indexOf("田端") >= 0) {
           setTimeout(function() { PosttoTwitter("田端でバタバタ"); }, 1500);
         }
+        /*
         else if (! data.user.protected ) {
           chat.pop_or_push(text, PosttoTwitter);
         }
+        */
 
     });
 

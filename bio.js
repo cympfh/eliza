@@ -8,7 +8,6 @@ function bio(name, cont) {
     .exec(command, function(err, data) {
       if (err) {
         console.warn(err);
-        cont(err);
         return;
       }
       data = data.slice(data.indexOf('>') + 1
