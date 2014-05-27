@@ -17,12 +17,10 @@ var version = '0.12.0'
   , tenkei   = require('./shindan').tenkei
   , memoProc = require('./memo')
   , happiness= require('./happiness')
-  // let me Google
-  , lmgtfy   = require('./lmgtfy')
-  // look good to me
-  , lgtm     = require('./lgtm')
-  , tuple = require('./eng')
+  , lmgtfy   = require('./lmgtfy') // let me Google
+  , lgtm     = require('./lgtm') // look good to me
   , bio = require('./bio')
+  , cood = require('./cood')
 
   , esc = String.fromCharCode(27)
   ;
@@ -56,19 +54,6 @@ function post_tenki(name, loc, status_id, source) {
   tenki(name, loc, function(result) {
     ReplytoTwitter(name, result, status_id);
   });
-}
-
-function System(com, name, status_id) {
-    console.log("System $", com);
-    child.exec(com, function (stderr,stdout,stdin) {
-        ReplytoTwitter(name, d(stdout, stderr) , status_id)
-    });
-    // where
-    function d(o, e){ var e2 = e==null ? "" : ("\nerr: "+e); return o+e2 }
-}
-
-function Factor(n, name, status_id) {
-    System("factor " + parseInt(n), name, status_id);
 }
 
 function tosho(name, status_id) {
@@ -203,17 +188,6 @@ setInterval(function() {
           }
           return;
         }
-        else if (isMe(name) && beginWith(text, ":!hoge")) {
-          com = 'bash ~/Dropbox/hoge';
-          System(com, name, status_id);
-          return;
-        }
-        else if (isMe(name) && beginWith(text, ":!")) {
-          com = text.slice(2);
-          console.log(":!", com);
-          System(com, name, status_id);
-          return;
-        }
         else if (beginWith(text, ":help")) {
           var url = "https://www.dropbox.com/s/9is9rabnnbqg88s/help.html";
           PosttoTwitter('help doc: ' + url);
@@ -277,10 +251,11 @@ setInterval(function() {
         }
         else if (text.indexOf("天気教え")>=0 || text.indexOf("洗濯物占")>=0) {
           return post_tenki(name, undefined, status_id, source);
-          return;
         }
-        else if (beginWith(text, ":factor")) {
-          return Factor(text.split(" ")[1], name, status_id);
+        else if (text.indexOf(':co ') === 0) {
+          cood(text.slice(4), function(lat, lng, loc) {
+            ReplytoTwitter(name, lat + ', ' + lng + ' #' + loc, status_id);
+          });
         }
         else if (beginWith(text, ":tosho")) {
           return tosho(name, status_id)

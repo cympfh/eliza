@@ -1,10 +1,6 @@
-var twitter  = require("ntwitter"),
-    twit =
-      new twitter({
-        consumer_key:        '6eURWj9HZNHLOHVjHlemA',
-        consumer_secret:     'ePJ0KSEHskh1kzYzuAB6f8LCGegOknyfn8TghCIRY',
-        access_token_key:    '342000322-2SlZRNdCAo8KJf6CJ9KgeuYTc2zo572ANzwEKouM',
-        access_token_secret: 'jD1E58LuGHvlv2ldA5vaBEryGvlQ0U2Hfdam6lcsSa4' })
+var Twitter  = require("ntwitter"),
+    me = require('../setting.json').users.ampeloss,
+    twit = new Twitter(me);
 
 var barrier = (function() {
   var stack = [];
