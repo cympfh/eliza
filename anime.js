@@ -2,7 +2,7 @@ var exec = require("child_process").exec
   , fs   = require("fs")
   ;
 
-function getAnimeList(cont) {
+function getAnimeList(cont, flg) {
 
   function split(ls, name) {
     var ret = [];
@@ -29,7 +29,9 @@ function getAnimeList(cont) {
   var fname = '/tmp/animeList'
     , url = "http://www.posite-c.com/anime/day/";
 
-  exec( "curl "+url+"|grep \"<table id=\\\"today\\\"\" > /tmp/ls"
+  var day = flg ? "tomorrow" : "today";
+
+  exec( "curl "+url+"|grep \"<table id=\\\"" + (day) + "\\\"\" > /tmp/ls"
       , function () {
           fs.readFile('/tmp/ls', 'utf8', function(err, ls) {
 
@@ -44,6 +46,10 @@ function getAnimeList(cont) {
             infos.forEach(function (info, i) {
               var time, kyoku
                 , title = titles[i];
+
+              title = title.replace(/&lt;/g, '<')
+              title = title.replace(/&gt;/g, '>')
+              title = title.replace(/&amp;/g, '&')
 
               if (info.length < 3 || info[0].indexOf(' - ') < 0) {
                 return;
@@ -68,7 +74,7 @@ function getAnimeList(cont) {
 
 }
 
-function getAnime(cont) {
+function getAnime(cont, flg) {
 
   function tokyo(x) {
     if (x.indexOf('BS-') !== -1) { return false; }
@@ -105,7 +111,7 @@ function getAnime(cont) {
           ;
 
         var at = parseInt(t0, 10);
-        if ((5 <= at && at <= 18) || !tokyo(kyoku)) {
+        if ((5 <= at && at < 21) || !tokyo(kyoku)) {
           return;
         }
 
@@ -124,10 +130,19 @@ function getAnime(cont) {
     });
   }
 
-  getAnimeList(parse);
+  getAnimeList(parse, flg);
 }
 
 // ---------------------------------------
 
-// getAnime(console.log);
-module.exports = getAnime;
+// getAnime(console.log, true);
+module.exports = {
+  today: function(cont) { return getAnime(cont, false) },
+  tomorrow: function(cont) {
+    try {
+      return getAnime(cont, true);
+    } catch(e) {
+      cont("an error / this may work afternoon.");
+    }
+  }
+};

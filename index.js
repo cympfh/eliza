@@ -9,7 +9,7 @@ var version = '0.12.0'
   , chat     = require('./chat')
 
   , tenki    = require("./tenki")
-  , getAnime = require("./anime")
+  , anime    = require("./anime")
   , runJ     = require('./j')
   , twitpic  = require('./twitpic')
   , kasitime = require('./kasitime')
@@ -19,6 +19,7 @@ var version = '0.12.0'
   , happiness= require('./happiness')
   , lmgtfy   = require('./lmgtfy') // let me Google
   , lgtm     = require('./lgtm') // look good to me
+  , ej = require('./ej')
   , bio = require('./bio')
   , cood = require('./cood')
 
@@ -207,15 +208,16 @@ setInterval(function() {
                   ReplytoTwitter(name, "\n"+result, status_id) });
           return;
         }
-        else if (beginWith(text, ":anime")) {
-          getAnime(function(ls) {
-            console.log('anime');
-            console.log(ls);
+        else if (beginWith(text, ":anime!")) {
+          anime.tomorrow(function(ls) {
             ReplytoTwitter(name, ls, status_id);
           });
-          return;
         }
-
+        else if (beginWith(text, ":anime")) {
+          anime.today(function(ls) {
+            ReplytoTwitter(name, ls, status_id);
+          });
+        }
         else if (beginWith(text, ":memo")) {
           memoProc(text, name, status_id, ReplytoTwitter);
         }
@@ -302,7 +304,7 @@ setInterval(function() {
           });
           return;
         }
-        else if (beginWith(text, ":lmg")) {
+        else if (beginWith(text, ":lmg ")) {
           var q = text.split(' ').slice(1).join(' ');
           q = q.replace(/[\r\n]/g, '');
           q = q.replace(/[\']/g, '%09');
@@ -310,6 +312,10 @@ setInterval(function() {
         }
         else if (beginWith(text, ":lgtm")) {
           lgtm(function(url) { ReplytoTwitter(name, url, status_id) });
+        }
+        else if (beginWith(text, ":ej ")) {
+          var q = text.split(' ')[1];
+          ej(q, function(result) { ReplytoTwitter(name, result, status_id); });
         }
         else if (text.indexOf("オハヨウゴザイマース") >= 0) {
           console.log("# good morning");

@@ -1,4 +1,5 @@
-var fs = require('fs');
+var fs = require('fs')
+  , file = process.env.PWD + '/memo.txt';
 
 module.exports = memoProc;
 
@@ -14,15 +15,17 @@ Object.prototype.toString = function() {
   }
   return '({' + ret.join(", ") + '})';
 };
+
 Array.prototype.toString = function() {
   return '[' + this.map(function(x){return x.toString()}).join(", ") + ']';
 };
+
 function beginWith (text, pre) { return text.indexOf(pre) == 0; }
 
 function memoProc(text, name, status_id, reply) {
   text = text.split(/[\r\n]/)[0];
-  var memo =
-    eval(fs.readFileSync(process.env.HOME+"/Dropbox/node/eliza/memo.txt","utf8"));
+  var memo = eval(fs.readFileSync(file, "utf8"));
+
   const addm = ":memo add "
       , addn = ":memoa "
       , addl = ":memo list"
@@ -113,8 +116,7 @@ function memoProc(text, name, status_id, reply) {
   }
 
   function update() {
-    fs.writeFileSync(process.env.HOME + "/Dropbox/node/eliza/memo.txt"
-        , memo.toString());
+    fs.writeFileSync(file, memo.toString());
   }
 }
 
