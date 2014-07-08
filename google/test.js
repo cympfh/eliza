@@ -1,5 +1,5 @@
 fs = require('fs')
-
+isgd = require('../isgd');
 
 // <h3 class="r"><a href="/url?q=http://d.hatena.ne.jp/keyword/hoge&amp;sa=U&amp;ei=nrK7U5r3Eonj8AXlvYLQDw&amp;ved=0CBQQFjAA&amp;usg=AFQjCNFccBXMhikxTo4d5evPmM1fH1pcBw"><b>hoge</b>とは - はてなキーワード - はてなダ イアリー</a></h3>
 
@@ -26,6 +26,18 @@ function after (line) {
   return [url, title];
 }
 
+Array.prototype.shuffle = function() {
+  var that = this;
+  return that;
+  for (var i=0; i<that.length; ++i) {
+    var j = Math.random() * that.length | 0;
+    var tmp = that[j];
+    that[j] = that[i];
+    that[i] = tmp;
+  }
+  return tmp;
+};
+
 function search() {
   var re = /<h3 class="r".*?\/h3>/g
 
@@ -41,8 +53,12 @@ function search() {
     return;
   }
 
-  data.forEach(function(a) {
-    console.log('[%s](%s)', a[0], a[1]);
+  data.shuffle()
+    .forEach(function(a) {
+      var title = a[1].slice(0,20);
+      isgd(a[0], function(url) {
+        console.log('[%s](%s)', title, url);
+      });
   });
 }
 search();
