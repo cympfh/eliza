@@ -268,6 +268,14 @@ setInterval(function() {
               .forEach(function(line) { ReplytoTwitter(name, line, status_id); });
           });
         }
+        else if (text.slice(-4) === '[検索]') {
+          var w = text.slice(0, -4).trim();
+          google(w, function(data) {
+            data.split('\n').slice(0, -1)
+              .slice(0, 3)
+              .forEach(function(line) { ReplytoTwitter(name, line, status_id); });
+          });
+        }
         else if (beginWith(text, ":tosho")) {
           return tosho(name, status_id)
         }
