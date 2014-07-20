@@ -1,5 +1,5 @@
 #!/usr/local/bin/node
-var version = '0.12.0'
+var version = '0.13.0'
 
   , child    = require("child_process")
   , fs       = require("fs")
@@ -22,6 +22,7 @@ var version = '0.12.0'
   , ej = require('./ej')
   , bio = require('./bio')
   , cood = require('./cood')
+  , google = require('./google')
 
   , esc = String.fromCharCode(27)
   ;
@@ -155,9 +156,11 @@ setInterval(function() {
           setTimeout(function() { Favorite(status_id) }, t);
         }
         */
-        if (randFav > Math.random() &&
-               ( text.indexOf("つら") !== -1
-              || text.indexOf("死") !== -1)) {
+        if (
+             text.indexOf("つら") !== -1
+          || (text.indexOf("ぽよ") !== -1 && text.length < 5)
+          || text.indexOf("死") !== -1
+          ) {
           var t = 9000 + Math.floor(Math.random()*300)*100;
           setTimeout(function() { Favorite(status_id) }, t);
         }
@@ -257,6 +260,22 @@ setInterval(function() {
         else if (text.indexOf(':co ') === 0) {
           cood(text.slice(4), function(lat, lng, loc) {
             ReplytoTwitter(name, lat + ', ' + lng + ' #' + loc, status_id);
+          });
+        }
+        else if (beginWith(text, ':google ')) {
+          var w = text.split(' ').slice(1).join('+');
+          google(w, function(data) {
+            data.split('\n').slice(0, -1)
+              .slice(0, 3)
+              .forEach(function(line) { ReplytoTwitter(name, line, status_id); });
+          });
+        }
+        else if (text.slice(-4) === '[検索]') {
+          var w = text.slice(0, -4).trim();
+          google(w, function(data) {
+            data.split('\n').slice(0, -1)
+              .slice(0, 3)
+              .forEach(function(line) { ReplytoTwitter(name, line, status_id); });
           });
         }
         else if (beginWith(text, ":tosho")) {
