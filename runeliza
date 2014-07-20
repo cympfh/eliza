@@ -1,5 +1,6 @@
 while :
 do
   node ./index.js
-  sleep 6
+  echo "broken? restart after 30 sec"
+  sleep 30
 done

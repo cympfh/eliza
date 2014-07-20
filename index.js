@@ -156,9 +156,11 @@ setInterval(function() {
           setTimeout(function() { Favorite(status_id) }, t);
         }
         */
-        if (randFav > Math.random() &&
-               ( text.indexOf("つら") !== -1
-              || text.indexOf("死") !== -1)) {
+        if (
+             text.indexOf("つら") !== -1
+          || (text.indexOf("ぽよ") !== -1 && text.length < 5)
+          || text.indexOf("死") !== -1
+          ) {
           var t = 9000 + Math.floor(Math.random()*300)*100;
           setTimeout(function() { Favorite(status_id) }, t);
         }
