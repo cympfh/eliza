@@ -156,10 +156,11 @@ setInterval(function() {
           setTimeout(function() { Favorite(status_id) }, t);
         }
         */
-        if (
-             text.indexOf("つら") !== -1
-          || (text.indexOf("ぽよ") !== -1 && text.length < 5)
-          || text.indexOf("死") !== -1
+        if ( Math.random() < .3 && (
+                 text.indexOf("つら") !== -1
+              || (text.indexOf("ぽよ") !== -1 && text.length < 5)
+              || text.indexOf("死") !== -1
+            )
           ) {
           var t = 9000 + Math.floor(Math.random()*300)*100;
           setTimeout(function() { Favorite(status_id) }, t);
@@ -181,23 +182,7 @@ setInterval(function() {
         }
         */
 
-        if (isMe(name) && beginWith(text, ":?")) {
-          var com = text.slice(2);
-            console.log(":eval", com);
-          try {
-            var it = eval(com);
-            ReplytoTwitter(name, it + "", status_id);
-          } catch(e) {
-            ReplytoTwitter(name, "err in eval : "+e+" "+strTime(), status_id);
-          }
-          return;
-        }
-        else if (beginWith(text, ":help")) {
-          var url = "https://www.dropbox.com/s/9is9rabnnbqg88s/help.html";
-          PosttoTwitter('help doc: ' + url);
-          ReplytoTwitter(name, 'read this page', status_id);
-        }
-        else if (beginWith(text, ":emitisak")) {
+        if (beginWith(text, ":kasitime")) {
           kasitime(function(l) {
             ReplytoTwitter(name, l, status_id) });
         }
@@ -262,12 +247,18 @@ setInterval(function() {
             ReplytoTwitter(name, lat + ', ' + lng + ' #' + loc, status_id);
           });
         }
-        else if (beginWith(text, ':google ')) {
-          var w = text.split(' ').slice(1).join('+');
+        else if (beginWith(text, ':?')) {
+          text = text.replace(/　/g, ' ');
+          var w = text.slice(2).trim().replace(/ /g, '+');
+          console.warn('? google with ' + w);
           google(w, function(data) {
-            data.split('\n').slice(0, -1)
-              .slice(0, 3)
-              .forEach(function(line) { ReplytoTwitter(name, line, status_id); });
+            var lines = 
+              data.split('\n').slice(0, -1)
+                .slice(0, 3)
+                .join('\n');
+
+            console.warn('? results:\n' + lines);
+            ReplytoTwitter(name, lines, status_id);
           });
         }
         else if (text.slice(-4) === '[検索]') {

@@ -55,7 +55,7 @@ function search() {
 
   data.shuffle()
     .forEach(function(a) {
-      var title = a[1].slice(0,30);
+      var title = a[1].slice(0,16);
       isgd(a[0], function(url) {
         console.log('[%s](%s)', title, url);
       });

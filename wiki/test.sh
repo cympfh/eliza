@@ -4,9 +4,6 @@ NAME=$2
 
 WIKIURL=`w3m -dump "https://duckduckgo.com/?q=$WORD+ja.wikipedia.org" | grep "ja.wikipedia.org/wiki/" | head -1`
 
-# normalized word
-WORD="${WIKIURL##*/}"
-
 TMPFILE=/tmp/wiki.html
 w3m -dump $WIKIURL > $TMPFILE
 

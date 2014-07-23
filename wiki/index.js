@@ -1,10 +1,10 @@
 var exec = require('child_process').exec;
-function animeinfo(title, name, cont) {
+function wk(title, name, cont) {
   if (cont == undefined) {
     cont = name;
     name = undefined;
   }
-  var command = 'bash ./test.sh ' + title;
+  var command = 'bash ./wiki/test.sh ' + title;
   if (name !== undefined) command += ' ' + name;
   console.warn(command);
   exec(command, function(er, ou) {
@@ -12,7 +12,7 @@ function animeinfo(title, name, cont) {
     cont(ou);
   });
 }
-
+module.exports = wk;
 //animeinfo('さばげぶ', console.log);
 //animeinfo('さばげぶ', 'かないみか',console.log);
-animeinfo('さばげぶ', '堀江由衣',console.log);
+//animeinfo('さばげぶ', '堀江由衣',console.log);
