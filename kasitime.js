@@ -40,7 +40,7 @@ function randomLine(item, cont) {
                  .replace(/&nbsp;/g, ' ')
                  .replace(/&gt;/g, '>')
                  .replace(/&lt;/g, '<')
-                 .replace(/&#039;/g, '\'');
+                 .replace(/&#039;/g, '\'')
                  .split('<br>')
                  .filter(function(l) { return l.length > 7 });
    

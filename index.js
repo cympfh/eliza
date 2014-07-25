@@ -23,6 +23,7 @@ var version = '0.13.0'
   , bio = require('./bio')
   , cood = require('./cood')
   , google = require('./google')
+  , duckduckgo = require('./duckduckgo')
 
   , esc = String.fromCharCode(27)
   ;
@@ -156,8 +157,8 @@ setInterval(function() {
           setTimeout(function() { Favorite(status_id) }, t);
         }
         */
-        if ( Math.random() < .3 && (
-                 text.indexOf("つら") !== -1
+        if ( Math.random() < .1 && (
+                 (text.indexOf("つら") !== -1 && text.length < 10)
               || (text.indexOf("ぽよ") !== -1 && text.length < 5)
               || text.indexOf("死") !== -1
             )
@@ -196,15 +197,8 @@ setInterval(function() {
                   ReplytoTwitter(name, "\n"+result, status_id) });
           return;
         }
-        else if (beginWith(text, ":anime!")) {
-          anime.tomorrow(function(ls) {
-            ReplytoTwitter(name, ls, status_id);
-          });
-        }
         else if (beginWith(text, ":anime")) {
-          anime.today(function(ls) {
-            ReplytoTwitter(name, ls, status_id);
-          });
+          anime(function(ls) { ReplytoTwitter(name, ls, status_id); });
         }
         else if (beginWith(text, ":memo")) {
           memoProc(text, name, status_id, ReplytoTwitter);
@@ -245,6 +239,15 @@ setInterval(function() {
         else if (text.indexOf(':co ') === 0) {
           cood(text.slice(4), function(lat, lng, loc) {
             ReplytoTwitter(name, lat + ', ' + lng + ' #' + loc, status_id);
+          });
+        }
+        else if (beginWith(text, ':duck')) {
+          text = text.replace(/　/g, ' ');
+          var qs = text.slice(2).trim().split(' ');
+          duckduckgo(qs, function(mi, de, url) {
+            var body;
+            body = "["+mi+"] " + de + "\n(" + url + ")";
+            ReplytoTwitter(name, body, status_id);
           });
         }
         else if (beginWith(text, ':?')) {
