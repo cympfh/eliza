@@ -6,9 +6,14 @@ function pop_or_push(text, post) {
     var len = ptw.length;
     return len < 30 ? 0.1 : 3/len
   }
+  function pushp() {
+    var x = Math.random(),
+        y = prob_push();
+    return x < y;
+  }
 
   function prob_pop() {
-    const prob_pop_gen = 0.003
+    const prob_pop_gen = 0.04
         , h = (new Date()).getHours()
         , t = Math.abs(h-2)
     return prob_pop_gen * (t <  2 ? 1
@@ -16,37 +21,60 @@ function pop_or_push(text, post) {
                          :          0.3)
   }
 
+  function popp() {
+    var x = Math.random(),
+        y = prob_pop();
+    return x < y;
+  }
+
+  function shuffle(t) {
+    t = t.slice(0, 19);
+    var j = 2 + (Math.random() * 2 | 0)
+    for (var i=0; i < j; ++i) {
+      if (i % 2) {
+        var k1, k2;
+        k1 = Math.random() * t.length | 0;
+        k2 = Math.random() * t.length | 0;
+        if (k1 === k2) continue;
+        var j1, j2;
+        j1 = Math.min(k1, k2);
+        j2 = Math.max(k1, k2);
+        t = t.slice(j2, t.length) + t.slice(j1, j2) + t.slice(0, j1);
+      } else {
+        var k;
+        k = Math.random() * t.length | 0
+        t = t.slice(k, t.length) + t.slice(0, k);
+      }
+    }
+    return t;
+  }
+
   function pushable(text) {
-    return (text.length < 40
-           && text.indexOf("RT") == -1
+    return (
+              text.indexOf("RT") == -1
            && text.indexOf("@") == -1
+           && text.indexOf("#") == -1
            && text.indexOf("ttp") == -1
            )
   }
 
-  if (ptw.length > 30 && Math.random() < prob_pop()) {
-    console.log("# pop")
-    post(ptw.shift())
+  if (ptw.length > 30 && popp()) {
+    var p = ptw.shift() + ptw.shift();
+    p = shuffle(p);
+    console.log("# pop: %s", p)
+    post(p);
   }
-  else if (pushable(text) && Math.random() < prob_push() ) {
-    console.log("# push", text);
+  else if (pushable(text) && pushp()) {
     ptw.push(text)
-    console.log("ptw.length = ", ptw.length);
+    console.log("# push [%s]; then length is %d", text, ptw.length);
+  }
+  else {
+    console.log('## cannot pop or push');
+    console.log(ptw.length, prob_pop(), prob_push());
+    console.log('###')
   }
 
 }
-
-/*
-(function test() {
-  for (var i=0;i<100;++i) {
-    pop_or_push(''+i, function(){});
-  }
-})();
-*/
-
-var imgs = [
-  "http://t.co/tN4bSvNrA1"
-];
 
 function chat(tw, cont) {
 

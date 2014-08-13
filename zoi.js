@@ -1,0 +1,73 @@
+//zoi.herokuapp.com/js/services.js
+//
+
+var ar = [
+      'pic.twitter.com/2v9qwmlPPz',
+      'pic.twitter.com/4EWdIZGmuG',
+      'pic.twitter.com/4gZWKWEosT',
+      'pic.twitter.com/6bdYFIyc3e',
+      'pic.twitter.com/6ux2d6b6QF',
+      'pic.twitter.com/7hvwgRmZ2r',
+      'pic.twitter.com/7s5Ke5IQVs',
+      'pic.twitter.com/DE1dKyLsav',
+      'pic.twitter.com/F9Mh9uqglo',
+      'pic.twitter.com/GBqizwBB0Y',
+      'pic.twitter.com/IPsYt9K1t2',
+      'pic.twitter.com/J3NNfZqfFF',
+      'pic.twitter.com/Kc2QpmA3PC',
+      'pic.twitter.com/LCn2AKuz2s',
+      'pic.twitter.com/MN976yFbkh',
+      'pic.twitter.com/MdPBrTGSJj',
+      'pic.twitter.com/N6aoztCzZq',
+      'pic.twitter.com/NGKgsDxEic',
+      'pic.twitter.com/NYs5I3aDP3',
+      'pic.twitter.com/OlYSO56tKx',
+      'pic.twitter.com/QPFDOuSkHv',
+      'pic.twitter.com/Qa4OOuaSb4',
+      'pic.twitter.com/Qlch0hIfa0',
+      'pic.twitter.com/S4Q2gkOaej',
+      'pic.twitter.com/SJjcyMkKNc',
+      'pic.twitter.com/TVJaHaVXo2',
+      'pic.twitter.com/TXgeWHKGZC',
+      'pic.twitter.com/ThDlCfuyba',
+      'pic.twitter.com/TzK4f6K8Cf',
+      'pic.twitter.com/VMJbHYLznB',
+      'pic.twitter.com/Y3ht2Ud94J',
+      'pic.twitter.com/cDMU3qEQmw',
+      'pic.twitter.com/cGdCEaSfyt',
+      'pic.twitter.com/diDaeb9bnB',
+      'pic.twitter.com/e440yggIiE',
+      'pic.twitter.com/fZKzPp5Wmx',
+      'pic.twitter.com/g0tGY4FtE4',
+      'pic.twitter.com/gHmc4e6RGw',
+      'pic.twitter.com/h0n3thj44p',
+      'pic.twitter.com/hohSBtMWJI',
+      'pic.twitter.com/iaXuorgasw',
+      'pic.twitter.com/j6jcjPTdmK',
+      'pic.twitter.com/jEHjdl6k3N',
+      'pic.twitter.com/jjXJFYBZjy',
+      'pic.twitter.com/lcvdPWUnm7',
+      'pic.twitter.com/lkDaoEEC7H',
+      'pic.twitter.com/ltC7iuI7rd',
+      'pic.twitter.com/m1m5YlOoET',
+      'pic.twitter.com/mrkPJC3DYc',
+      'pic.twitter.com/npWAwmcME6',
+      'pic.twitter.com/onsbKNL4H7',
+      'pic.twitter.com/p8WNhtAlcb',
+      'pic.twitter.com/pZLsJIJPK4',
+      'pic.twitter.com/pmNLhaqR3w',
+      'pic.twitter.com/rKtM2Pmh8T',
+      'pic.twitter.com/rWLIjU08mU',
+      'pic.twitter.com/s9R0mikezN',
+      'pic.twitter.com/tdVvJVRtGv',
+      'pic.twitter.com/xD9Hk8HHLf',
+      'pic.twitter.com/xpfgbad6bT',
+      'pic.twitter.com/yh1ObvxjVI'
+];
+
+function zoi(cont) {
+  var idx = Math.random() * ar.length | 0;
+  cont('http://' + ar[idx]);
+}
+
+module.exports = zoi;

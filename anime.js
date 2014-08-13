@@ -1,6 +1,7 @@
 var exec = require("child_process").exec
   , fs   = require("fs")
   , tmp = '/tmp/anime-list'
+  , fname = '/tmp/anime-html'
   , url = "http://www.posite-c.com/anime/day/"
   ;
 
@@ -8,14 +9,16 @@ var exec = require("child_process").exec
 function loop() {
   var now = new Date();
   var hr = now.getHours();
-  if (hr < 6 || hr > 9) return;
-  cache(function(ls) {
-    console.log("# anime cached!!");
-    console.log(ls);
-    console.log("---");
-  });
+  console.log("It is %d hr.", hr);
+
+  if (4 < hr && hr < 20) {
+    console.log("# making new cache");
+    fs.unlinkSync(tmp);
+    fs.unlinkSync(fname);
+    cache(function(ls) { console.log("# anime cached!!"); });
+  }
 }
-setInterval(loop, 30 * 60 * 60 * 1000);
+setInterval(loop, 30 * 60 * 1000);
 
 function anime(cont) {
   fs.exists(tmp, function(exists) {
@@ -74,11 +77,11 @@ function cache(cont) {
         }
 
         msg +=
-          "\nt0; kyoku; title"
+          "\nt0 kyoku title"
             .replace("t0", t0)
             //.replace("t1", t1)
             .replace("kyoku", kyoku_alias(kyoku))
-            .replace("title", title.slice(0,10))
+            .replace("title", title.slice(0,20))
         ;
 
       });
@@ -112,7 +115,6 @@ function cache(cont) {
     return x;
   }
 
-  var fname = '/tmp/anime-html'
 
   exec( "curl "+url+"|grep \"<table id=\\\"today\\\"\" > /tmp/ls"
       , function () {
