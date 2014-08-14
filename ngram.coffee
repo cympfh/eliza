@@ -12,7 +12,7 @@ model_path = './ngram/model.json'
 __BOS__ = true
 __EOS__ = false
 
-N = 5
+N = 4
 gram = new ngram N
 
 table = {}
@@ -22,6 +22,7 @@ train = (path, model) ->
   add_table = (datum) ->
     datum.forEach (d) ->
       key = d.slice 0, -1
+        .join ''
       val = d[d.length - 1]
       if table[key]
         if table[key][val]
@@ -48,20 +49,26 @@ load = (path) ->
   warn "DONE LOAD"
 
 make = () ->
-
   sen = []
   u = (true for i in [2 .. N])
+  prod = 1
+  threshold = 0.0000032
+
   while true
-    # warn "u is %j", u
-    v = choose table[u]
-    # warn "subt is %j", table[u]
+    [v, pr] = choose table[u.join '']
+    prod *= pr
     u = u .concat [v]
     u = u.slice (- N + 1)
-    # warn "v is #{v}"
     if not v or v is __EOS__.toString()
       break
     sen .push v
-  sen.join ''
+
+  sen = sen.join ''
+
+  if prod < threshold
+    do make
+  else
+    return sen
 
 choose = (subt) ->
   total = 0
@@ -71,7 +78,7 @@ choose = (subt) ->
   for tar, count of subt
     r -= count
     if r < 0
-      return tar
+      return [tar, count / total]
 
 module.exports =
   make: make

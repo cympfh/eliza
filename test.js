@@ -1,4 +1,5 @@
-a = require('./ngram')
-//a.load(a.model_path)
-a.train(a.train_path, a.model_path)
-for (i=0;i<100;++i) console.log(a.make())
+mail_alias = require('./mail-alias')
+
+console.log(mail_alias('cympfh'))
+console.log(mail_alias('ampeloss'))
+console.log(mail_alias('no-exists', 'default@mail.com'))

@@ -16,7 +16,7 @@
 
   __EOS__ = false;
 
-  N = 5;
+  N = 4;
 
   gram = new ngram(N);
 
@@ -27,7 +27,7 @@
     add_table = function(datum) {
       return datum.forEach(function(d) {
         var key, val;
-        key = d.slice(0, -1);
+        key = d.slice(0, -1).join('');
         val = d[d.length - 1];
         if (table[key]) {
           if (table[key][val]) {
@@ -66,7 +66,7 @@
   };
 
   make = function() {
-    var i, sen, u, v;
+    var i, pr, prod, sen, threshold, u, v, _ref;
     sen = [];
     u = (function() {
       var _i, _results;
@@ -76,8 +76,11 @@
       }
       return _results;
     })();
+    prod = 1;
+    threshold = 0.0000032;
     while (true) {
-      v = choose(table[u]);
+      _ref = choose(table[u.join('')]), v = _ref[0], pr = _ref[1];
+      prod *= pr;
       u = u.concat([v]);
       u = u.slice(-N + 1);
       if (!v || v === __EOS__.toString()) {
@@ -85,7 +88,12 @@
       }
       sen.push(v);
     }
-    return sen.join('');
+    sen = sen.join('');
+    if (prod < threshold) {
+      return make();
+    } else {
+      return sen;
+    }
   };
 
   choose = function(subt) {
@@ -100,7 +108,7 @@
       count = subt[tar];
       r -= count;
       if (r < 0) {
-        return tar;
+        return [tar, count / total];
       }
     }
   };

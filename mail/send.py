@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # coding: utf-8
 
+import os
 import sys
 import smtplib
 from email.Header import Header
@@ -8,7 +9,10 @@ from email.MIMEMultipart import MIMEMultipart
 from email.MIMEImage import MIMEImage
 from email.MIMEText import MIMEText
 
-mine = "cympfh@gmail.com"
+HOME = os.environ["HOME"]
+f = open(HOME + "/datum/my-mail")
+mine = f.readline()[:-1]
+pwd = f.readline()[:-1]
 
 def create(subj, to, body):
   outer = MIMEMultipart()
@@ -26,7 +30,7 @@ def gmail(outer):
   s.ehlo()
   s.starttls()
   s.ehlo()
-  s.login(mine, 'qwer3der')
+  s.login(mine, pwd)
   s.sendmail(mine, to, outer.as_string())
   s.close()
 

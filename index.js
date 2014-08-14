@@ -8,6 +8,7 @@ var version = '0.14.0'
   , curl     = require('./curl')
   , chat     = require('./chat')
   , mail     = require('./mail')
+  , mail_alias = require('./mail-alias')
   , safe     = require('./safe')
   , ngram = require('./ngram')
 
@@ -371,10 +372,10 @@ function colon(text, name, status_id, cont) {
     // var to = qs[1];
     var command = qs.slice(1).join(' ');
     colon(command, name, status_id, function(result) {
-      var to = name + "@gmail.com";
+      var to = mail_alias(name, name + "@gmail.com");
       mail(to, command, result);
       console.warn("mail", command, to, result);
-      cont("to " + to + "\n" + result);
+      cont("mail \"" + result + "\"");
     });
   }
 }
