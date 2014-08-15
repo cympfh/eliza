@@ -36,6 +36,7 @@ var ar = [
       'pic.twitter.com/cDMU3qEQmw',
       'pic.twitter.com/cGdCEaSfyt',
       'pic.twitter.com/diDaeb9bnB',
+      'pic.twitter.com/doCWmGzfCk',
       'pic.twitter.com/e440yggIiE',
       'pic.twitter.com/fZKzPp5Wmx',
       'pic.twitter.com/g0tGY4FtE4',

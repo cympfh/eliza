@@ -53,6 +53,7 @@ make = () ->
   u = (true for i in [2 .. N])
   prod = 1
   threshold = 0.0000032
+  threshold = 0.00000000032
 
   while true
     [v, pr] = choose table[u.join '']

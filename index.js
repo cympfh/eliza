@@ -129,25 +129,14 @@ setInterval(function() {
         // ----- processes for command ---------------------
 
         function isMe(name) {
-          return ["ampeloss","cympfh", "sympf"].indexOf(name) !== -1;
+          return ["ampeloss","cympfh", "unddich"].indexOf(name) !== -1;
         }
 
         function isReplyToEliza (text) {
           return /^@ampeloss/.test(text)
         }
 
-        /*
         if (!isMe(name) && randFav > Math.random()) {
-          var t = 9000 + Math.floor(Math.random()*300)*100;
-          setTimeout(function() { Favorite(status_id) }, t);
-        }
-        */
-        if ( Math.random() < .1 && (
-                 (text.indexOf("つら") !== -1 && text.length < 10)
-              || (text.indexOf("ぽよ") !== -1 && text.length < 5)
-              || text.indexOf("死") !== -1
-            )
-          ) {
           var t = 9000 + Math.floor(Math.random()*300)*100;
           setTimeout(function() { Favorite(status_id) }, t);
         }
@@ -207,7 +196,8 @@ setInterval(function() {
         }
         else if (Math.random() < .01) {
           // chat.pop_or_push(text, PosttoTwitter);
-          ngram.train(ngram.train_path, ngram.model_path)
+          // ngram.train(ngram.train_path, ngram.model_path)
+          ngram.load(ngram.model_path)
           PosttoTwitter(ngram.make())
         }
 

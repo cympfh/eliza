@@ -78,6 +78,7 @@
     })();
     prod = 1;
     threshold = 0.0000032;
+    threshold = 0.00000000032;
     while (true) {
       _ref = choose(table[u.join('')]), v = _ref[0], pr = _ref[1];
       prod *= pr;
