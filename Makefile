@@ -1,5 +1,5 @@
 lint:
-	jslint index.js
+	jslint --indent=2 --stupid=true index.js
 
 git:
 	git add --all

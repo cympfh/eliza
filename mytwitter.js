@@ -68,7 +68,7 @@ function reply_to(name, msg, id, option) {
             });
 }
 
-function Favorite(id) {
+function fav_twitter(id) {
   var url = "https://api.twitter.com/1.1/favorites/create.json";
   twit.post(url, { "id" : id }, function(er, data) {});
 }
@@ -78,5 +78,5 @@ function Favorite(id) {
 exports.twit = twit;
 exports.post_twitter = post_twitter;
 exports.reply_to = reply_to;
-exports.Favorite = Favorite;
+exports.fav_twitter = fav_twitter;
 
