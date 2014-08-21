@@ -1,3 +1,5 @@
+lint:
+	jslint index.js
 
 git:
 	git add --all

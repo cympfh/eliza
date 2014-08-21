@@ -25,7 +25,7 @@ var barrier = (function() {
   }
 })();
 
-function PosttoTwitter(msg) {
+function post_twitter(msg) {
     if (msg == undefined || msg == "" || msg == " " || msg == "\n") return;
     if (barrier()) return;
 
@@ -34,15 +34,15 @@ function PosttoTwitter(msg) {
              , {status : msg}
              , function(err,data){
                 if (err) console.log('PostTwitter', err);
-                console.log("# PosttoTwitter ", msg); });
+                console.log("# post_twitter ", msg); });
 }
 
-function ReplytoTwitter(name, msg, id, option) {
+function reply_to(name, msg, id, option) {
   if (msg == "") return;
   if (barrier()) return;
-  if (name == undefined || name == "") return PosttoTwitter(msg);
+  if (name == undefined || name == "") return post_twitter(msg);
 
-  console.log("# ReplytoTwitter", name, msg, id)
+  console.log("# reply_to", name, msg, id)
 
   msg = "@" + name + " " + msg;
   var msg0, msg1;
@@ -64,7 +64,7 @@ function ReplytoTwitter(name, msg, id, option) {
   twit.post("https://api.twitter.com/1.1/statuses/update.json"
           , {status : msg0, in_reply_to_status_id : id}
           , function(_, data) {
-              if (msg1) ReplytoTwitter(name, msg1, id);
+              if (msg1) reply_to(name, msg1, id);
             });
 }
 
@@ -76,7 +76,7 @@ function Favorite(id) {
 //-------------
 
 exports.twit = twit;
-exports.PosttoTwitter = PosttoTwitter;
-exports.ReplytoTwitter = ReplytoTwitter;
+exports.post_twitter = post_twitter;
+exports.reply_to = reply_to;
 exports.Favorite = Favorite;
 

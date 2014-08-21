@@ -72,7 +72,7 @@ function cache(cont) {
           ;
 
         var at = parseInt(t0, 10);
-        if ((5 <= at && at < 21) || !tokyo(kyoku)) {
+        if ((5 <= at && at < 19) || !tokyo(kyoku)) {
           return;
         }
 

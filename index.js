@@ -4,6 +4,7 @@ var version = '0.14.0'
   , child    = require("child_process")
   , fs       = require("fs")
 
+  , util     = require('./util')
   , twitter  = require('./mytwitter')
   , curl     = require('./curl')
   , chat     = require('./chat')
@@ -34,8 +35,8 @@ var version = '0.14.0'
   ;
 
 var twit = twitter.twit
-  , PosttoTwitter = twitter.PosttoTwitter
-  , ReplytoTwitter = twitter.ReplytoTwitter
+  , post_twitter = twitter.post_twitter
+  , reply_to = twitter.reply_to
   , Favorite = twitter.Favorite
   ;
 
@@ -132,10 +133,6 @@ setInterval(function() {
           return ["ampeloss","cympfh", "unddich"].indexOf(name) !== -1;
         }
 
-        function isReplyToEliza (text) {
-          return /^@ampeloss/.test(text)
-        }
-
         if (!isMe(name) && randFav > Math.random()) {
           var t = 9000 + Math.floor(Math.random()*300)*100;
           setTimeout(function() { Favorite(status_id) }, t);
@@ -143,25 +140,10 @@ setInterval(function() {
 
         // other commands
 
-
-        /*
-        if (name!=="ampeloss" && isReplyToEliza(text)) {
-          var body = text.replace(/@[a-zA-Z0-9:]* /g, '')
-          var time =
-            2000 + (Math.pow(Math.random(), 100) * 30000)|0 ;
-          console.log("# catch reply to me", time, body);
-          setTimeout(function() {
-            chat.reply(body, function(result) {
-              ReplytoTwitter(name, result, status_id) });
-          }, time);
-          return;
-        }
-        */
-
         if (text[0] === ":") {
           return colon(text, name, status_id,
                       function(result) {
-                        ReplytoTwitter(name, result, status_id)
+                        reply_to(name, result, status_id)
                       });
         }
         else if (text.slice(-4) === '[検索]') {
@@ -174,31 +156,36 @@ setInterval(function() {
             .join('\n');
 
             console.warn('? results:\n' + lines);
-            ReplytoTwitter(name, lines, status_id);
+            reply_to(name, lines, status_id);
           });
         }
         else if (text.indexOf("天気教え")>=0 || text.indexOf("洗濯物占")>=0) {
           return tenki(name, undefined, function(result) {
-            ReplytoTwitter(name, result, status_id);
+            reply_to(name, result, status_id);
           });
         }
         else if (/tenkei|TENKEI|тенкей|テンケイ|てんけい|天啓|天恵|添景|点景|天刑|天渓/.test(text)) {
-          tenkei(function(res) { ReplytoTwitter(name, res, status_id) });
+          tenkei(function(res) { reply_to(name, res, status_id) });
           return;
         }
         else if (text.indexOf("オハヨウゴザイマース") >= 0) {
-          ReplytoTwitter(name,
+          reply_to(name,
                          "┗(⌒)(╬*☻-☻*╬)(⌒)┛＜ゲットアウト！（出ていけ！）",
                          status_id);
         }
         else if (text.indexOf("田端") >= 0) {
-          setTimeout(function() { PosttoTwitter("田端でバタバタ"); }, 1500);
+          setTimeout(function() { post_twitter("田端でバタバタ"); }, 1500);
         }
-        else if (Math.random() < .01) {
-          // chat.pop_or_push(text, PosttoTwitter);
+        else if (Math.random() < .004) {
+          // chat.pop_or_push(text, post_twitter);
           // ngram.train(ngram.train_path, ngram.model_path)
           ngram.load(ngram.model_path)
-          PosttoTwitter(ngram.make())
+          post_twitter(ngram.make())
+        }
+        else if (name !== 'ampeloss' && util.is_reply(text)) {
+          ngram.load(ngram.model_path)
+          msg = ngram.make();
+          reply_to(name, msg, status_id);
         }
 
     });
@@ -246,7 +233,7 @@ function colon(text, name, status_id, cont) {
     anime(cont);
   }
   else if (beginWith(text, ":memo")) {
-    memoProc(text, name, status_id, ReplytoTwitter);
+    memoProc(text, name, status_id, reply_to);
   }
 
   else if (beginWith(text, ":bio ")) {
