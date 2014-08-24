@@ -66,7 +66,7 @@ make = () ->
 
   sen = sen.join ''
 
-  if prod < threshold
+  if prod < threshold or sen.length < 5
     do make
   else
     return sen

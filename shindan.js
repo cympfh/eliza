@@ -10,7 +10,7 @@ function tenkei(cont) {
       var idx  = Math.floor(Math.random() * cand.length)
       num  = cand[idx]
   }
-  var unamegen = "RightHereRightNowFatboy1234567890あいうえお我ギグゲ後多値つてと機械学習パーセプと論帆下飲食禁止"
+  var unamegen = "1982347２９３８４７せのぽぬめ粉塵火山日本国民は国民の選出するうんたらによってうんたらする義務を負うとともに戦禍を"
   var uname = '';
   for (var i=0, len = 6 + Math.floor(Math.random()*12); i < len; ++i)
     uname += unamegen[Math.floor(Math.random()*unamegen.length)];

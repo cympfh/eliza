@@ -15,6 +15,7 @@ var ngram = require('./ngram');
 
 var tenki    = require('./tenki');
 var zoi = require('./zoi');
+var misdo = require('./misdo');
 var anime    = require("./anime");
 var runJ     = require('./j');
 var twitpic  = require('./twitpic');
@@ -103,6 +104,10 @@ function colon(text, name, status_id, cont) {
   }
   if (beginWith(text, ":anime")) {
     anime(cont);
+    return;
+  }
+  if (beginWith(text, ":misdo")) {
+    misdo(function (msg) { reply_to(name, msg, status_id); });
     return;
   }
   if (beginWith(text, ":memo")) {
@@ -316,6 +321,13 @@ function colon(text, name, status_id, cont) {
           });
           return;
         }
+        if (text.indexOf('#memo') >= 0) {
+          text = text.replace(/#memo/g, '');
+          text = text.trim();
+          text = ':memo add ' + text;
+          console.warn('transfer to ', text);
+          return colon(text, name, status_id, function (result) { reply_to(name, result, status_id); });
+        }
         if (text.indexOf("天気教え") >= 0 || text.indexOf("洗濯物占") >= 0) {
           return tenki(name, undefined, function (result) {
             reply_to(name, result, status_id);
@@ -340,7 +352,7 @@ function colon(text, name, status_id, cont) {
           post_twitter(ngram.make());
           return;
         }
-        if (name !== 'ampeloss' && util.is_reply(text)) {
+        if (name !== 'ampeloss' && name !== '2Dbot' && util.is_reply(text)) {
           ngram.load(ngram.model_path);
           msg = ngram.make();
           reply_to(name, msg, status_id);

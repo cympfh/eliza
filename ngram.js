@@ -90,7 +90,7 @@
       sen.push(v);
     }
     sen = sen.join('');
-    if (prod < threshold) {
+    if (prod < threshold || sen.length < 5) {
       return make();
     } else {
       return sen;
