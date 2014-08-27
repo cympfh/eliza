@@ -129,6 +129,10 @@ function colon(text, name, status_id, cont) {
     tenki(name, text.split(" ")[1], cont);
     return;
   }
+  if (beginWith(text, ":tenkei")) {
+    tenkei(cont);
+    return;
+  }
   if (beginWith(text, ":tenki")) {
     return tenki(name, text.split(" ")[1], cont);
   }
@@ -262,7 +266,7 @@ function colon(text, name, status_id, cont) {
     });
 
     stream.on('data', function (data) {
-      var t, user, name, nick, text, status_id, source, colored;
+      var m, t, user, name, nick, text, status_id, source, colored;
 
       if (!data || !data.user || !data.text) {
         return;
@@ -298,7 +302,8 @@ function colon(text, name, status_id, cont) {
       }
 
       if (!isMe(name) && rand_fav > Math.random()) {
-        t = 9000 + Math.floor(Math.random() * 300) * 100;
+        m = 30 + (Math.random() * 1000);
+        t = m * m;
         setTimeout(function () { fav_twitter(status_id); }, t);
       }
 
@@ -346,10 +351,12 @@ function colon(text, name, status_id, cont) {
           return;
         }
         if (Math.random() < 0.004) {
-          // chat.pop_or_push(text, post_twitter);
-          // ngram.train(ngram.train_path, ngram.model_path);
-          ngram.load(ngram.model_path);
-          post_twitter(ngram.make());
+          setTimeout(function() {
+            // chat.pop_or_push(text, post_twitter);
+            // ngram.train(ngram.train_path, ngram.model_path);
+            ngram.load(ngram.model_path);
+            post_twitter(ngram.make());
+          }, 2000 + (Math.random() * 3000 | 0));
           return;
         }
         if (name !== 'ampeloss' && name !== '2Dbot' && util.is_reply(text)) {
@@ -387,3 +394,4 @@ function colon(text, name, status_id, cont) {
   console.log("### stream start");
 
 }());
+

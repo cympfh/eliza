@@ -2,6 +2,7 @@
 //
 
 var ar = [
+      'pic.twitter.com/0HKiQUx2Sq',
       'pic.twitter.com/2v9qwmlPPz',
       'pic.twitter.com/4EWdIZGmuG',
       'pic.twitter.com/4gZWKWEosT',
@@ -17,11 +18,13 @@ var ar = [
       'pic.twitter.com/Kc2QpmA3PC',
       'pic.twitter.com/Km9f5ubm5A',
       'pic.twitter.com/LCn2AKuz2s',
+      'pic.twitter.com/Lo6kvgSd7w',
       'pic.twitter.com/MN976yFbkh',
       'pic.twitter.com/MdPBrTGSJj',
       'pic.twitter.com/N6aoztCzZq',
       'pic.twitter.com/NCyZ3WvGuI',
       'pic.twitter.com/NGKgsDxEic',
+      'pic.twitter.com/NSyR7wrxRU #せやな',
       'pic.twitter.com/NYs5I3aDP3',
       'pic.twitter.com/OlYSO56tKx',
       'pic.twitter.com/Q8GyPmUe3p',
@@ -34,6 +37,7 @@ var ar = [
       'pic.twitter.com/TXgeWHKGZC',
       'pic.twitter.com/ThDlCfuyba',
       'pic.twitter.com/TzK4f6K8Cf',
+      'pic.twitter.com/UK0eGAHUg7',
       'pic.twitter.com/VMJbHYLznB',
       'pic.twitter.com/Y3ht2Ud94J',
       'pic.twitter.com/cDMU3qEQmw',
@@ -65,6 +69,8 @@ var ar = [
       'pic.twitter.com/s9R0mikezN',
       'pic.twitter.com/sEWcfPvNhx',
       'pic.twitter.com/tdVvJVRtGv',
+      'pic.twitter.com/uVKz2G9SRs',
+      'pic.twitter.com/uIaicwoMg3',
       'pic.twitter.com/xD9Hk8HHLf',
       'pic.twitter.com/xpfgbad6bT',
       'pic.twitter.com/yh1ObvxjVI'

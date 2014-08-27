@@ -1,5 +1,3 @@
-seiyu:
-	cat tw_take tw_mari tw_yukari > train.txt
+te:
+	cat tw_humable tw_take tw_mari tw_yukari > train.txt
 
-all:
-	cat tw_* > train.txt
