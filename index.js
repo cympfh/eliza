@@ -41,7 +41,7 @@ var fav_twitter = twitter.fav_twitter;
 
 // ----------------------------------------------------
 
-var rand_fav = 0.004;
+var rand_fav = 0.00004;
 
 function strTime() {
   'use strict';
@@ -359,7 +359,7 @@ function colon(text, name, status_id, cont) {
           }, 2000 + (Math.random() * 3000 | 0));
           return;
         }
-        if (name !== 'ampeloss' && name !== '2Dbot' && util.is_reply(text)) {
+        if (util.is_reply(text)) {
           ngram.load(ngram.model_path);
           msg = ngram.make();
           reply_to(name, msg, status_id);
