@@ -15,6 +15,7 @@ var ngram = require('./ngram');
 
 var tenki    = require('./tenki');
 var zoi = require('./zoi');
+var calendar = require ('./calendar');
 var misdo = require('./misdo');
 var anime    = require("./anime");
 var runJ     = require('./j');
@@ -237,6 +238,7 @@ function colon(text, name, status_id, cont) {
     // var to = qs[1];
     (function () {
       var command = qs.slice(1).join(' ');
+      if (command[0] !== ':') command = ':' + command;
       colon(command, name, status_id, function (result) {
         var to = mail_alias(name, name + "@gmail.com");
         mail(to, command, result);
@@ -244,6 +246,11 @@ function colon(text, name, status_id, cont) {
         cont("mail \"" + result + "\"");
       });
     }());
+  }
+  if (beginWith(text, ":cal")) {
+    q = text.split(' ').slice(1).join('');
+    calendar(q, cont);
+    return;
   }
 }
 
