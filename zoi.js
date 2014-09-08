@@ -71,6 +71,7 @@ var ar = [
       'pic.twitter.com/tdVvJVRtGv',
       'pic.twitter.com/uVKz2G9SRs',
       'pic.twitter.com/uIaicwoMg3',
+      'pic.twitter.com/vDp9oK58q2',
       'pic.twitter.com/xD9Hk8HHLf',
       'pic.twitter.com/xpfgbad6bT',
       'pic.twitter.com/yh1ObvxjVI'
