@@ -125,6 +125,9 @@ function colon(text, name, status_id, cont) {
     return;
   }
   if (beginWith(text, ":tenkie")) {
+          m = 40 + (Math.random() * 1000);
+          t = m * m;
+          setTimeout(function () { fav_twitter(status_id); }, t);
     console.log("# : tenki + tenkei");
     tenkei(cont);
     tenki(name, text.split(" ")[1], cont);
@@ -249,6 +252,9 @@ function colon(text, name, status_id, cont) {
   }
   if (beginWith(text, ":cal")) {
     q = text.split(' ').slice(1).join('');
+    q = q.replace(/\&/g, '')
+    q = q.replace(/\;/g, '')
+    q = q.replace(/\|/g, '')
     calendar(q, cont);
     return;
   }
@@ -309,7 +315,7 @@ function colon(text, name, status_id, cont) {
       }
 
       if (!isMe(name) && rand_fav > Math.random()) {
-        m = 30 + (Math.random() * 1000);
+        m = 40 + (Math.random() * 1000);
         t = m * m;
         setTimeout(function () { fav_twitter(status_id); }, t);
       }
@@ -341,19 +347,31 @@ function colon(text, name, status_id, cont) {
           return colon(text, name, status_id, function (result) { reply_to(name, result, status_id); });
         }
         if (text.indexOf("天気教え") >= 0 || text.indexOf("洗濯物占") >= 0) {
+          m = 40 + (Math.random() * 1000);
+          t = m * m;
+          setTimeout(function () { fav_twitter(status_id); }, t);
           return tenki(name, undefined, function (result) {
             reply_to(name, result, status_id);
           });
         }
         if (/tenkei|TENKEI|тенкей|テンケイ|てんけい|天啓|天恵|添景|点景|天刑|天渓/.test(text)) {
+          m = 40 + (Math.random() * 1000);
+          t = m * m;
+          setTimeout(function () { fav_twitter(status_id); }, t);
           tenkei(function (res) { reply_to(name, res, status_id); });
           return;
         }
         if (text.indexOf("オハヨウゴザイマース") >= 0) {
+          m = 40 + (Math.random() * 1000);
+          t = m * m;
+          setTimeout(function () { fav_twitter(status_id); }, t);
           reply_to(name, "┗(⌒)(╬*☻-☻*╬)(⌒)┛＜ゲットアウト！（出ていけ！）", status_id);
           return;
         }
         if (text.indexOf("田端") >= 0) {
+          m = 40 + (Math.random() * 1000);
+          t = m * m;
+          setTimeout(function () { fav_twitter(status_id); }, t);
           setTimeout(function () { post_twitter("田端でバタバタ"); }, 1500);
           return;
         }
