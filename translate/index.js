@@ -4,6 +4,7 @@ function main(command, cont) {
   var from_lang = ls[1];
   var to_lang = ls[2];
   var text = ls.slice(3).join(' ');
+  text = text.replace(/"/g, '');
   text = encodeURIComponent(text);
   text = text.replace(/'/g, "%27");
 
