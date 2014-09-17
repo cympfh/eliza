@@ -5,6 +5,7 @@ function main(command, cont) {
   var to_lang = ls[2];
   var text = ls.slice(3).join(' ');
   text = encodeURIComponent(text);
+  text = text.replace(/'/g, "%27");
 
   var exec = require('child_process').exec;
   console.warn('bash ./translate/run.sh ' + from_lang + ' ' + to_lang + ' \'' + text + '\'');
