@@ -12,6 +12,7 @@ var mail     = require('./mail');
 var mail_alias = require('./mail-alias');
 var safe     = require('./safe');
 var ngram = require('./ngram');
+var translate = require('./translate');
 
 var tenki    = require('./tenki');
 var zoi = require('./zoi');
@@ -190,6 +191,10 @@ function colon(text, name, status_id, cont) {
     number = 196616;
     s_name = (function (x) { return x || name; }(text.split(" ")[1]));
     shindan(number, name, s_name, cont);
+    return;
+  }
+  if (beginWith(text, ":trans")) {
+    translate(text, function (result) { reply_to(name, result, status_id) });
     return;
   }
   if (beginWith(text, ":shindan ")) {
