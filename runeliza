@@ -1,4 +1,4 @@
-./ngram-train
+# ./ngram-train
 while :
 do
   node ./index.js

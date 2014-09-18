@@ -10,10 +10,10 @@ var curl     = require('./curl');
 var chat     = require('./chat');
 var mail     = require('./mail');
 var mail_alias = require('./mail-alias');
-var safe     = require('./safe');
-var ngram = require('./ngram');
+//var safe     = require('./safe');
+//var ngram = require('./ngram');
 var translate = require('./translate');
-
+var zapping  = require('./zapping');
 var tenki    = require('./tenki');
 var zoi = require('./zoi');
 var calendar = require ('./calendar');
@@ -32,7 +32,6 @@ var ej       = require('./ej');
 var bio = require('./bio');
 var cood = require('./cood');
 var google = require('./google');
-var duckduckgo = require('./duckduckgo');
 
 var esc = String.fromCharCode(27);
 
@@ -143,16 +142,6 @@ function colon(text, name, status_id, cont) {
   }
   if (beginWith(text, ":twitpic")) {
     twitpic(cont);
-    return;
-  }
-  if (beginWith(text, ':duck')) {
-    text = text.replace(/　/g, ' ');
-    qs = text.slice(2).trim().split(' ');
-    duckduckgo(qs, function (mi, de, url) {
-      var body;
-      body = "[" + mi + "] " + de + "\n(" + url + ")";
-      cont(body);
-    });
     return;
   }
   if (beginWith(text, ':?')) {
@@ -381,18 +370,17 @@ function colon(text, name, status_id, cont) {
           return;
         }
         if (Math.random() < 0.004) {
-          setTimeout(function() {
-            // chat.pop_or_push(text, post_twitter);
-            // ngram.train(ngram.train_path, ngram.model_path);
-            ngram.load(ngram.model_path);
-            post_twitter(ngram.make());
-          }, 2000 + (Math.random() * 3000 | 0));
-          return;
+          return zapping(post_twitter);
         }
         if (util.is_reply(text)) {
+          /*
           ngram.load(ngram.model_path);
           msg = ngram.make();
           reply_to(name, msg, status_id);
+          */
+          zapping(function (msg) {
+            reply_to(name, msg, status_id);
+          });
           return;
         }
       }());
