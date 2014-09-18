@@ -13,9 +13,4 @@ function search(word, cont) {
   });
 }
 
-function test(words) {
-  words.forEach(function(w){ search(w, console.log) });
-}
-// test(['本郷', '東京 本郷', '本八幡', '市川', '神保町']);
-
 module.exports = search;

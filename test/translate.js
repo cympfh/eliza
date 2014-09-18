@@ -4,7 +4,6 @@ function assert(expectation) {
   expectation = expectation.trim();
   return function (result) {
     result = result.trim();
-    console.warn(result);
     if (expectation !== result) {
       throw new Error("expectation is \"" + expectation + "\". But got \"" + result + "\"");
     }

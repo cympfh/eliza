@@ -370,15 +370,11 @@ function colon(text, name, status_id, cont) {
           return;
         }
         if (Math.random() < 0.004) {
-          return zapping(post_twitter);
+          chat.pop_or_push(text, post_twitter);
+          return;
         }
         if (util.is_reply(text)) {
-          /*
-          ngram.load(ngram.model_path);
-          msg = ngram.make();
-          reply_to(name, msg, status_id);
-          */
-          zapping(function (msg) {
+          chat.reply(function (msg) {
             reply_to(name, msg, status_id);
           });
           return;

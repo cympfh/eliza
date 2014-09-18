@@ -9,7 +9,6 @@ function main(command, cont) {
   text = text.replace(/'/g, "%27");
 
   var exec = require('child_process').exec;
-  console.warn('bash ./translate/run.sh ' + from_lang + ' ' + to_lang + ' \'' + text + '\'');
   exec('bash ./translate/run.sh ' + from_lang + ' ' + to_lang + ' \'' + text + '\'', function (er, out) {
     cont(out);
   });

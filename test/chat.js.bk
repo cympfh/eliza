@@ -1,0 +1,13 @@
+chat = require('../chat');
+timeline = require('./sample_timeline.json')
+
+/*
+for (var i = 0; i < Math.min(200, timeline.length); ++i) {
+  chat.pop_or_push(timeline[i], console.log, true);
+}
+*/
+
+for (var i = 0; i < Math.min(20, timeline.length); ++i) {
+  chat.reply(timeline[i], console.log);
+}
+

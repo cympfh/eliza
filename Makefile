@@ -1,5 +1,11 @@
-lint:
-	jslint --indent=2 --stupid=true index.js
+all: _test
+	cat Makefile
+
+_run:
+	./runthis
+
+_test:
+	for i in test/*.js; do echo $$i; node $$i; done
 
 git:
 	git add --all
