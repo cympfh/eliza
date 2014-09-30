@@ -38,7 +38,7 @@ function cache(cont) {
   function tokyo(x) {
     if (x.indexOf('BS-') !== -1) { return false; }
     var ls =
-      [ "TOKYO MX", "テレビ東京", "TBS"
+      [ "TOKYO MX", "テレビ東京", "TBS", 'tvk'
       , "フジテレビ", "日本テレビ", "テレビ朝日"
       , "ニコニコ"];
     return ls.some(function (l) { return x.indexOf(l) !== -1; });

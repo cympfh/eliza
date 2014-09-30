@@ -1,6 +1,7 @@
 # ./ngram-train
 while :
 do
+  cd chat; make; cd -
   node ./index.js
   echo "broken? restart after 30 sec"
   sleep 30

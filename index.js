@@ -11,7 +11,7 @@ var chat     = require('./chat');
 var mail     = require('./mail');
 var mail_alias = require('./mail-alias');
 //var safe     = require('./safe');
-//var ngram = require('./ngram');
+var ngram    = require('./ngram');
 var translate = require('./translate');
 var zapping  = require('./zapping');
 var tenki    = require('./tenki');
@@ -90,7 +90,7 @@ setInterval(function () {
 
 function colon(text, name, status_id, cont) {
   'use strict';
-  var code, fname, q, qs, w, lobby_id, number, s_name;
+  var code, fname, q, qs, w, lobby_id, number, s_name, t;
   if (beginWith(text, ":kasitime")) {
     kasitime(cont);
     return;
@@ -125,9 +125,10 @@ function colon(text, name, status_id, cont) {
     return;
   }
   if (beginWith(text, ":tenkie")) {
-          m = 40 + (Math.random() * 1000);
-          t = m * m;
-          setTimeout(function () { fav_twitter(status_id); }, t);
+    t = Math.pow(40 + (Math.random() * 1000), 2);
+    setTimeout(function () {
+      fav_twitter(status_id);
+    }, t);
     console.log("# : tenki + tenkei");
     tenkei(cont);
     tenki(name, text.split(" ")[1], cont);
@@ -369,14 +370,19 @@ function colon(text, name, status_id, cont) {
           setTimeout(function () { post_twitter("田端でバタバタ"); }, 1500);
           return;
         }
-        if (Math.random() < 0.004) {
-          chat.pop_or_push(text, post_twitter);
+        if (Math.random() < 0.3) {
+          chat.push(text);
           return;
         }
+        if (Math.random() < 0.1) {
+          chat.mutter(post_twitter);
+        }
         if (util.is_reply(text)) {
-          chat.reply(function (msg) {
-            reply_to(name, msg, status_id);
-          });
+          setTimeout(function() {
+            chat.reply(text, function (msg) {
+              reply_to(name, msg, status_id);
+            });
+          }, 1000 + ((Math.random()) * 10000 | 0));
           return;
         }
       }());
