@@ -11,7 +11,6 @@ var chat     = require('./chat');
 var mail     = require('./mail');
 var mail_alias = require('./mail-alias');
 //var safe     = require('./safe');
-var ngram    = require('./ngram');
 var translate = require('./translate');
 var zapping  = require('./zapping');
 var tenki    = require('./tenki');
