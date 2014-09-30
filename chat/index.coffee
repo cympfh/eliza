@@ -7,7 +7,7 @@ pop_or_push = (text, cont, debug = false) ->
   prob_push = ->
     return 0.8 if debug
     len = ptw.length
-    if len < 30 then 0.1 else (3 / len)
+    if len < 30 then 0.2 else (3 / len)
 
   pushp = -> (do random) < (do prob_push)
 
@@ -16,7 +16,7 @@ pop_or_push = (text, cont, debug = false) ->
 
     return 0 if ptw.length < 30
 
-    gen = 0.04
+    gen = 0.004
     h = do (new Date).getHours
     t = abs h - 2
 
@@ -58,21 +58,25 @@ pop_or_push = (text, cont, debug = false) ->
 
   switch
     when do popp
+      ###
       p = (do ptw.shift) + (do ptw.shift)
-      #p = shuffle p
+      p = shuffle p
+      ###
+      p = do ptw.shift
       console.warn "# chat.pop #{p}"
       cont p
 
     when (pushable text) and (do pushp)
       ptw.push text
-      console.warn "# ptw length is #{ptw.length}"
+      console.warn "# chat.push; ptw length is #{ptw.length}"
 
-###
     else
-      console.warn "# do nothing: 参考値: #{ptw.length} #{do prob_pop} #{do prob_push}"
-###
+      console.warn "# do nothing: 参考値: len pr_pop pr_push = #{ptw.length} #{do prob_pop} #{do prob_push}"
 
 chat = (text, cont) ->
+
+  text = text.replace(/@[a-zA-Z0-9_]?/g, '')
+  text = do text.trim
 
   # only !?-mark
   chat1 = (cont) ->

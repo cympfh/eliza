@@ -20,7 +20,7 @@
       }
       len = ptw.length;
       if (len < 30) {
-        return 0.1;
+        return 0.2;
       } else {
         return 3 / len;
       }
@@ -36,7 +36,7 @@
       if (ptw.length < 30) {
         return 0;
       }
-      gen = 0.04;
+      gen = 0.004;
       h = (new Date).getHours();
       t = abs(h - 2);
       switch (false) {
@@ -95,23 +95,26 @@
     };
     switch (false) {
       case !popp():
-        p = (ptw.shift()) + (ptw.shift());
+
+        /*
+        p = (do ptw.shift) + (do ptw.shift)
+        p = shuffle p
+         */
+        p = ptw.shift();
         console.warn("# chat.pop " + p);
         return cont(p);
       case !((pushable(text)) && (pushp())):
         ptw.push(text);
-        return console.warn("# ptw length is " + ptw.length);
+        return console.warn("# chat.push; ptw length is " + ptw.length);
+      default:
+        return console.warn("# do nothing: 参考値: len pr_pop pr_push = " + ptw.length + " " + (prob_pop()) + " " + (prob_push()));
     }
   };
 
-
-  /*
-      else
-        console.warn "# do nothing: 参考値: #{ptw.length} #{do prob_pop} #{do prob_push}"
-   */
-
   chat = function(text, cont) {
     var chat1, chat3;
+    text = text.replace(/@[a-zA-Z0-9_]?/g, '');
+    text = text.trim();
     chat1 = function(cont) {
       var a, i, last, n, p, _i;
       n = round(log((random()) * 100 + 2));
