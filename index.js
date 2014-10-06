@@ -340,6 +340,14 @@ function colon(text, name, status_id, cont) {
           console.warn('transfer to ', text);
           return colon(text, name, status_id, function (result) { reply_to(name, result, status_id); });
         }
+        if (text.indexOf(':zoi') >= 0) {
+          zoi(function (url) {
+            var msg = url + " #NEWGAME! " + (new Date());
+            reply_to(name, msg, status_id);
+            return;
+          });
+          return;
+        }
         if (text.indexOf("天気教え") >= 0 || text.indexOf("洗濯物占") >= 0) {
           m = 40 + (Math.random() * 1000);
           t = m * m;
@@ -371,18 +379,17 @@ function colon(text, name, status_id, cont) {
         }
         if (Math.random() < 0.3) {
           chat.push(text);
-          return;
         }
-        if (Math.random() < 0.1) {
+        if (Math.random() < 0.01) {
           chat.mutter(post_twitter);
         }
-        if (util.is_reply(text)) {
+        if (name !== 'ampeloss' && util.is_reply(text)) {
+          console.warn("# this is a reply to me:", text);
           setTimeout(function() {
             chat.reply(text, function (msg) {
               reply_to(name, msg, status_id);
             });
           }, 1000 + ((Math.random()) * 10000 | 0));
-          return;
         }
       }());
 
