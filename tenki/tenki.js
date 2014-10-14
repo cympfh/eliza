@@ -9,6 +9,7 @@ function tenki(name, loc, cont) {
   if (!(loc in DB.url)) loc = '佐渡';
 
   var url = "http://weather.jp.msn.com/local.aspx?wealocations=wc:" + DB.url[loc];
+  console.warn("tenki url: ", url);
   curl(url, 'GET', function(result) { cont(parse(result, loc)) });
 
   // where

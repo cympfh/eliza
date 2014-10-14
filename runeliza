@@ -1,6 +1,7 @@
 # ./ngram-train
 while :
 do
+  rm /tmp/anime-*
   cd chat; make; cd -
   node ./index.js
   echo "broken? restart after 30 sec"
