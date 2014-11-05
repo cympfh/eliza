@@ -41,7 +41,7 @@ var fav_twitter = twitter.fav_twitter;
 
 // ----------------------------------------------------
 
-var rand_fav = 0.00004;
+var rand_fav = 0.0004;
 
 function strTime() {
   'use strict';
@@ -97,9 +97,14 @@ function colon(text, name, status_id, cont) {
   if (beginWith(text, ":j ")) {
     code = text.slice(3).split('\n')[0];
     fname = "/tmp/jcode";
-    require("fs").writeFileSync(fname, code);
-    runJ(fname,
-         function (result) { cont("\n" + result); });
+    fs.writeFile(fname, code, function (err) {
+      if (err) {
+        console.warn(err);
+      } else {
+        runJ(fname,
+             function (result) { cont("\n" + result); });
+      }
+    });
     return;
   }
   if (beginWith(text, ":anime")) {
@@ -183,7 +188,9 @@ function colon(text, name, status_id, cont) {
     return;
   }
   if (beginWith(text, ":trans")) {
-    translate(text, function (result) { reply_to(name, result, status_id) });
+    translate(text, function (result) {
+      reply_to(name, result, status_id);
+    });
     return;
   }
   if (beginWith(text, ":shindan ")) {
@@ -235,7 +242,9 @@ function colon(text, name, status_id, cont) {
     // var to = qs[1];
     (function () {
       var command = qs.slice(1).join(' ');
-      if (command[0] !== ':') command = ':' + command;
+      if (command[0] !== ':') {
+        command = ':' + command;
+      }
       colon(command, name, status_id, function (result) {
         var to = mail_alias(name, name + "@gmail.com");
         mail(to, command, result);
@@ -246,9 +255,9 @@ function colon(text, name, status_id, cont) {
   }
   if (beginWith(text, ":cal")) {
     q = text.split(' ').slice(1).join('');
-    q = q.replace(/\&/g, '')
-    q = q.replace(/\;/g, '')
-    q = q.replace(/\|/g, '')
+    q = q.replace(/\&/g, '');
+    q = q.replace(/\;/g, '');
+    q = q.replace(/\|/g, '');
     calendar(q, cont);
     return;
   }
@@ -342,7 +351,7 @@ function colon(text, name, status_id, cont) {
         }
         if (text.indexOf(':zoi') >= 0) {
           zoi(function (url) {
-            var msg = url + " #NEWGAME! " + (new Date());
+            msg = url + " #NEWGAME! " + (new Date());
             reply_to(name, msg, status_id);
             return;
           });
@@ -377,10 +386,10 @@ function colon(text, name, status_id, cont) {
           setTimeout(function () { post_twitter("田端でバタバタ"); }, 1500);
           return;
         }
-        if (Math.random() < 0.3) {
+        if (Math.random() < 0.03) {
           chat.push(text);
         }
-        if (Math.random() < 0.01) {
+        if (Math.random() < 0.001) {
           chat.mutter(post_twitter);
         }
         if (name !== 'ampeloss' && util.is_reply(text)) {
