@@ -77,7 +77,8 @@ var ar = [
       'pic.twitter.com/vDp9oK58q2',
       'pic.twitter.com/xD9Hk8HHLf',
       'pic.twitter.com/xpfgbad6bT',
-      'pic.twitter.com/yh1ObvxjVI'
+      'pic.twitter.com/yh1ObvxjVI',
+      'pic.twitter.com/7l0ttenH6c'
 ];
 
 function zoi(cont) {

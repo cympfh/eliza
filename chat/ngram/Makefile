@@ -1,5 +1,6 @@
 target = train.txt
-sources = tw_mari tw_take tw_yukari 
+sources = cympfh.txt tw_tween2
 
-te:
+do:
 	cat ${sources} > ${target}
+	sed -i -f cympfh.sed ${target}

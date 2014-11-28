@@ -17,16 +17,17 @@
   load(model_path);
 
   reply = function(text, cont) {
-    var msg, pr;
+    var msg, pr, pr0;
     text = text.replace(/@[\sa-zA-Z0-9_]*/g, '');
     text = text.trim();
     pr = random();
-    if (pr < 0.3 && (pp.popp())) {
+    pr0 = 0.8;
+    if (pr < pr0 && (pp.popp())) {
       warn("## reply with pop");
       pp.pop(cont);
       return;
     }
-    pr -= 0.3;
+    pr -= pr0;
     if (pr < 0.3) {
       warn("## reply with ngram");
       msg = make();
@@ -49,7 +50,7 @@
     var pr;
     warn("## Eliza muttering");
     pr = pp.popp();
-    if (pr > 0.7) {
+    if (pr > 0.9) {
       warn("### with pop");
       return pp.pop(cont);
     } else {

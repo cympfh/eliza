@@ -3,7 +3,7 @@ while :
 do
   rm /tmp/anime-*
   cd chat; make; cd -
-  node ./index.js
+  coffee index.coffee
   echo "broken? restart after 30 sec"
   sleep 30
 done

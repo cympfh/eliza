@@ -12,7 +12,7 @@ model_path = './ngram/model.json'
 __BOS__ = true
 __EOS__ = false
 
-N = 4
+N = 5
 gram = new ngram N
 
 table = {}

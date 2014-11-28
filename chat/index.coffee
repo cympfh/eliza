@@ -9,8 +9,8 @@ load model_path
 
 # 
 # reply choose within follows
-# 1. pop (30% and possible)
-# 1. ngram (30%)
+# 1. pop with a probability
+# 1. ngram with a probability
 # 1. noun (if possible)
 # 1. append_mark (else)
 
@@ -21,12 +21,14 @@ reply = (text, cont) ->
 
   pr = do random
 
-  if pr < 0.3 and (do pp.popp)
+  pr0 = 0.8
+
+  if pr < pr0 and (do pp.popp)
     warn "## reply with pop"
     pp.pop cont
     return
 
-  pr -= 0.3
+  pr -= pr0
 
   if pr < 0.3
     warn "## reply with ngram"
@@ -46,7 +48,7 @@ reply = (text, cont) ->
 mutter = (cont) ->
   warn "## Eliza muttering"
   pr = do pp.popp
-  if pr > 0.7
+  if pr > 0.9
     warn "### with pop"
     pp.pop cont
   else

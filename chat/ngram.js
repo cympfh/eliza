@@ -16,7 +16,7 @@
 
   __EOS__ = false;
 
-  N = 4;
+  N = 5;
 
   gram = new ngram(N);
 
