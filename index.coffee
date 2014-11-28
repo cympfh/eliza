@@ -192,13 +192,7 @@ colon = (text, name, status_id, cont) ->
 
   if begin_with(text, ":hap") or begin_with(text, ":pre")
     happiness (num, time, tit, epi) ->
-      txt =
-        "第num話「tit」when epi"
-          .replace("num", num)
-          .replace("tit", tit)
-          .replace("when", time)
-          .replace("epi", epi)
-      cont txt
+      cont "第#{num}話「#{tit}」#{time} #{epi}"
     return
 
   if begin_with(text, ":lmg ")
@@ -276,7 +270,7 @@ do ->
       source = data.source.slice(data.source.indexOf(">") + 1, data.source.length - 4)
 
       colored = """
-#{esc}[34m@#{name} / #{nick}#{esc}[m ; #{esc}[33mvia #{source}#{esc}[m ; #{str_time()}]\n
+#{esc}[34m@#{name} / #{nick}#{esc}[m ; #{esc}[33mvia #{source}#{esc}[m ; #{str_time()}
 #{text}
 """
 
