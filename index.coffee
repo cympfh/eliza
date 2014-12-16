@@ -341,7 +341,7 @@ do ->
         return
 
       if (data.user.protected is false) and (Math.random() < 0.03)
-        chat.push text
+        chat.push text, name
 
       if Math.random() < 0.006
         chat.mutter post_twitter

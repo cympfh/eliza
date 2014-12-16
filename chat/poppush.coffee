@@ -24,8 +24,12 @@ pop = (cont) ->
     console.warn "# chat.pop #{p}"
     cont p
 
+is_number = (c) ->
+  n = parseInt(c)
+  not (isNaN n)
+
 # this works probability
-push = (text) ->
+push = (text, name) ->
 
   prob_push = ->
     len = ptw.length
@@ -33,15 +37,16 @@ push = (text) ->
 
   pushp = -> (do random) < (do prob_push)
 
-  pushable = (text) ->
+  pushable = (text, name) ->
     contain = (sub) -> (text.indexOf sub) isnt -1
     return false if contain 'RT'
     return false if contain '@'
     return false if contain '#'
     return false if contain 'ttp'
+    return false if (is_number name[name.length - 1])
     return true
 
-  if (pushable text) and (do pushp)
+  if (pushable text, name) and (do pushp)
     ptw.push text
     console.warn "# chat.push; ptw length is #{ptw.length}"
 
