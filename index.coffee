@@ -372,18 +372,3 @@ do ->
 
   console.log("### stream start")
 
-
-unddich_life = ->
-
-  console.warn "fuck your LIFE"
-
-  anime (result) ->
-    util.split result, 130, (f) ->
-      post_twitter "@unddich #{f}"
-
-  tenki "cympfh", "tokyo", (result) ->
-    post_twitter "@unddich #{result} #{str_time()}"
-
-  setTimeout unddich_life, (hour 12)
-
-do unddich_life
