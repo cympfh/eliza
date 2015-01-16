@@ -47,6 +47,7 @@ end_with = (text, tail) ->
   text.slice(- tail.length) is tail
 
 min = (n) -> n * 60000
+hour = (n) -> 60 * min n
 
 # ------ util for Twitter
 
@@ -383,6 +384,6 @@ unddich_life = ->
   tenki "cympfh", "tokyo", (result) ->
     post_twitter "@unddich #{result} #{str_time()}"
 
-  setTimeout unddich_life, (min 8*60)
+  setTimeout unddich_life, (hour 12)
 
 do unddich_life
