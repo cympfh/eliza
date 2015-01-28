@@ -1,13 +1,18 @@
 fs = require 'fs'
 runJ = require './j'
+princess = require './princess_precure.coffee' # precure
 
-fname = "/tmp/jcode"
+do ->
+  cont = console.log
 
-code = 'i. 10'
+  princess (err, datum) ->
+    if err
+      cont err
+      return
+    title = '#' + datum[0]
+    body = datum[1]
+    msg = "#{title} / #{body}"
+    msg = msg.slice(0, 120)
+    cont msg
 
-fs.writeFile fname, code, (err) ->
-  if err
-    console.warn err
-  else
-    runJ fname, (result) ->
-      console.log "#{result}"
+

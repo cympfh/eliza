@@ -20,7 +20,8 @@ twitpic  = require './twitpic'
 kasitime = require './kasitime'
 {shindan, tenkei} = require './shindan'
 memoProc = require './memo'
-happiness = require './happiness'
+happiness = require './happiness' # precure
+princess = require './princess_precure.coffee' # precure
 lmgtfy   = require './lmgtfy' # let me Google
 lgtm     = require './lgtm' # look good to me
 ej       = require './ej'
@@ -191,10 +192,16 @@ colon = (text, name, status_id, cont) ->
   if begin_with(text, ":test")
     return test cont
 
-  if begin_with(text, ":hap") or begin_with(text, ":pre")
-    happiness (num, time, tit, epi) ->
-      cont "第#{num}話「#{tit}」#{time} #{epi}"
-    return
+  if begin_with(text, ':prin') or begin_with(text, ';pre')
+    princess (err, datum) ->
+      if err
+        cont err
+        return
+      title = '#' + datum[0]
+      body = datum[1]
+      msg = "#{title} / #{body}"
+      msg = msg.slice(0, 120)
+      cont msg
 
   if begin_with(text, ":lmg ")
     q = text.split(' ').slice(1).join(' ')
