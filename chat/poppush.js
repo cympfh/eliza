@@ -13,7 +13,7 @@
       if (ptw.length < 30) {
         return 0;
       }
-      gen = 0.004;
+      gen = 0.001;
       h = (new Date).getHours();
       t = abs(h - 2);
       switch (false) {

@@ -10,5 +10,5 @@ _run:
 
 git:
 	git add --all
-	git commit -a -m "`kasitime`"
+	git commit -a -m "UPDATE NEWEST STAGE"
 	git push

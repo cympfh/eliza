@@ -7,7 +7,7 @@ popp = ->
   prob_pop = ->
     return 0 if ptw.length < 30
 
-    gen = 0.004
+    gen = 0.001
     h = do (new Date).getHours
     t = abs h - 2
 

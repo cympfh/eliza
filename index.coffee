@@ -192,7 +192,7 @@ colon = (text, name, status_id, cont) ->
   if begin_with(text, ":test")
     return test cont
 
-  if begin_with(text, ':prin') or begin_with(text, ';pre')
+  if begin_with(text, ':prin') or begin_with(text, ':prec')
     princess (err, datum) ->
       if err
         cont err
