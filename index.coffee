@@ -19,7 +19,7 @@ runJ     = require './j'
 twitpic  = require './twitpic'
 kasitime = require './kasitime'
 {shindan, tenkei} = require './shindan'
-memoProc = require './memo'
+memoProc = require './memo.coffee'
 happiness = require './happiness' # precure
 princess = require './princess_precure.coffee' # precure
 lmgtfy   = require './lmgtfy' # let me Google
@@ -28,6 +28,7 @@ ej       = require './ej'
 bio      = require './bio'
 cood     = require './cood'
 google   = require './google'
+dice = require './dice'
 {twit, post_twitter, reply_to, fav_twitter} = require './mytwitter'
 
 esc = String.fromCharCode 27
@@ -219,6 +220,16 @@ colon = (text, name, status_id, cont) ->
   if begin_with(text, ":co ")
     cood text.slice(4), (lat, lng, loc) ->
       cont "#{lat}, #{lng} ##{loc}"
+    return
+
+  if begin_with(text, ':dice')
+    xs = text.split ' '
+    n = 1
+    if xs[1]
+      n = parseInt(xs[1], 10)
+      n = 1 if isNaN n
+    me = (dice n).join ' '
+    cont "#{me} (#{(new Date()).toString()})"
     return
 
   if begin_with(text, ":echo ")
