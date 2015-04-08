@@ -14,7 +14,8 @@ tenki    = require './tenki'
 zoi      = require './zoi'
 calendar = require  './calendar'
 misdo    = require './misdo'
-anime    = require "./anime"
+anime    = require './anime'
+fanime   = require './flavored-anime'
 runJ     = require './j'
 twitpic  = require './twitpic'
 kasitime = require './kasitime'
@@ -99,6 +100,15 @@ colon = (text, name, status_id, cont) ->
     anime (result) ->
       util.split result, (140 - 10 - name.length), (frag) ->
         cont frag
+    return
+
+  if begin_with text, ":fanim"
+    fanime (result) ->
+      if result
+        util.split ('\n' + (result.join '\n')), (140 - 10 - name.length), (frag) ->
+          cont frag
+      else
+        cont 'None'
     return
 
   if begin_with text, ":misdo"
