@@ -1,5 +1,5 @@
 target = train.txt
-sources = cympfh.txt tw_tween2
+sources = tw_yukari tw_take cympfh.txt tw_tween2
 
 do:
 	cat ${sources} > ${target}
