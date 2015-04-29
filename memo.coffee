@@ -44,9 +44,12 @@ module.exports = (text, name, status_id, reply) ->
     do update
 
   memo_list = ->
-    footer = "\n(#{(Math.random() + '').slice(5)})"
+    hash =
+      parseInt ("#{Math.random()}".slice 5), 10
+        .toString 16
+    hash = "\n(#{hash})"
     if not memo[name]?
-      reply name, "Nothing#{footer}", status_id
+      reply name, "Nothing#{hash}", status_id
       return
 
     len = memo[name].length
@@ -56,10 +59,10 @@ module.exports = (text, name, status_id, reply) ->
       "[#{i}] #{item}"
 
     if msg.length is 0
-      reply name, "Nothing#{footer}", status_id
+      reply name, "Nothing#{hash}", status_id
       return
 
-    reply name, "\n#{msg.join '\n'}#{footer}", status_id
+    reply name, "\n#{msg.join '\n'}#{hash}", status_id
 
   memo_remove = (idxs) ->
     if not memo[name]?
