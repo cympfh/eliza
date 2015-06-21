@@ -1,18 +1,13 @@
 fs = require 'fs'
-runJ = require './j'
-princess = require './princess_precure.coffee' # precure
+youtube = require './youtube'
+
+begin_with = (text, pre) ->
+  text.indexOf(pre) is 0
 
 do ->
+  text = ':y2u ささみさん'
   cont = console.log
-
-  princess (err, datum) ->
-    if err
-      cont err
-      return
-    title = '#' + datum[0]
-    body = datum[1]
-    msg = "#{title} / #{body}"
-    msg = msg.slice(0, 120)
-    cont msg
-
+  if begin_with(text, ':y2u ')
+    q = text.split(' ').slice(1).join('%20')
+    youtube q, cont
 

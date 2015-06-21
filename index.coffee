@@ -31,6 +31,7 @@ cood     = require './cood'
 google   = require './google'
 dice = require './dice'
 {twit, post_twitter, reply_to, fav_twitter} = require './mytwitter'
+youtube = require './youtube'
 
 esc = String.fromCharCode 27
 
@@ -189,6 +190,10 @@ colon = (text, name, status_id, cont) ->
       msg = "#{title} / #{body}"
       msg = msg.slice(0, 120)
       cont msg
+
+  if begin_with(text, ':y2u ')
+    q = text.split(' ').slice(1).join('%20')
+    youtube q, cont
 
   if begin_with(text, ":lmg ")
     q = text.split(' ').slice(1).join(' ')
