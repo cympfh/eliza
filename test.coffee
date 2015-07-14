@@ -1,13 +1,11 @@
-fs = require 'fs'
-youtube = require './youtube'
+tw = require './mytwitter'
+dot = require './dot'
+console.log dot
 
-begin_with = (text, pre) ->
-  text.indexOf(pre) is 0
+->
+  succ = (fn) ->
+    console.log "@@@@ #{fn}"
+    tw.twit_with_media '@cympfh test', fn
+  dot.compile "久美子 -> 麗奈 [label=❤️]", succ, (console.warn)
 
-do ->
-  text = ':y2u ささみさん'
-  cont = console.log
-  if begin_with(text, ':y2u ')
-    q = text.split(' ').slice(1).join('%20')
-    youtube q, cont
-
+tw.twit_with_media '@cympfh test', "/tmp/421.png"

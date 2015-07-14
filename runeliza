@@ -2,7 +2,6 @@
 while :
 do
   rm /tmp/anime-*
-  cd chat; make; cd -
   coffee index.coffee
   echo "broken? restart after 30 sec"
   sleep 30
