@@ -160,18 +160,6 @@ colon = (text, name, status_id, cont) ->
       cont msg
     return
 
-  if begin_with(text, ":neko") or begin_with(text, ":neco")
-    number = 322469
-    s_name = text.split(' ')[1] or name
-    shindan number, name, s_name, cont
-    return
-
-  if begin_with(text, ":tateru")
-    number = 196616
-    s_name = text.split(' ')[1] or name
-    shindan number, name, s_name, cont
-    return
-
   if begin_with text, ":trans"
     translate text, (result) ->
       reply_to name, result, status_id
@@ -312,6 +300,11 @@ do ->
           return
 
       if (text.indexOf("おっけー") is 0) and (text.indexOf("天気") > 0)
+        tenki name, undefined, (result) ->
+          reply_to name, result, status_id
+        return
+
+      if (text.indexOf('洗濯') >= 0) and (text.indexOf('占い') >= 0)
         tenki name, undefined, (result) ->
           reply_to name, result, status_id
         return
