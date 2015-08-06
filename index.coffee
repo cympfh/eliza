@@ -30,7 +30,7 @@ bio      = require './bio'
 cood     = require './cood'
 google   = require './google'
 dice = require './dice'
-{twit, post_twitter, reply_to, twit_with_media} = require './mytwitter'
+{twit, post_twitter, reply_to, twit_with_media, destroy_twit} = require './mytwitter'
 youtube = require './youtube'
 dot     = require './dot'
 
@@ -328,6 +328,12 @@ do ->
 
       if Math.random() < 0.006
         chat.mutter post_twitter
+
+      if (name isnt "ampeloss") and (is_me name) and util.is_reply(text)
+        to_id = data.in_reply_to_status_id_str
+        if to_id
+          destroy_twit to_id
+          return
 
       if (name isnt "ampeloss") and util.is_reply(text)
         console.warn "# this is a reply to me:", text

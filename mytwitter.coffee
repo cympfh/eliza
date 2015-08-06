@@ -83,9 +83,16 @@ twit_with_media = (fn, status, status_id) ->
         datum.in_reply_to_status_id = status_id
       twit.post 'https://api.twitter.com/1.1/statuses/update.json', datum, (->)
 
+destroy_twit = (id, cont) ->
+  url = "https://api.twitter.com/1.1/statuses/destroy/#{id}.json"
+  if (not cont)
+    cont = (->)
+  twit.post url, {id: id}, cont
+
 module.exports =
   twit: twit
   post_twitter: post_twitter
   reply_to: reply_to
   fav_twitter: fav_twitter
   twit_with_media: twit_with_media
+  destroy_twit: destroy_twit
