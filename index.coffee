@@ -30,14 +30,13 @@ bio      = require './bio'
 cood     = require './cood'
 google   = require './google'
 dice = require './dice'
-{twit, post_twitter, reply_to, fav_twitter} = require './mytwitter'
+{twit, post_twitter, reply_to, twit_with_media} = require './mytwitter'
+youtube = require './youtube'
+dot     = require './dot'
 
 esc = String.fromCharCode 27
 
 # --------
-
-rand_fav = 0.0004
-
 
 str_time = ->
   t = new Date()
@@ -85,6 +84,14 @@ colon = (text, name, status_id, cont) ->
     kasitime cont
     return
 
+  if begin_with text, ":dot"
+    code = text.slice(4)
+    succ = (fn) ->
+      twit_with_media fn, "@#{name}", status_id
+    fail = (err) ->
+      reply_to name, err.toString(), status_id
+    dot.compile code, succ, fail
+
   if begin_with text, ":j "
     code = text.slice(3).split('\n')[0]
     fname = "/tmp/jcode"
@@ -102,15 +109,6 @@ colon = (text, name, status_id, cont) ->
         cont frag
     return
 
-  if begin_with text, ":fanim"
-    fanime (result) ->
-      if result
-        util.split ('\n' + (result.join '\n')), (140 - 10 - name.length), (frag) ->
-          cont frag
-      else
-        cont 'None'
-    return
-
   if begin_with text, ":misdo"
     misdo (msg) -> reply_to name, msg, status_id
     return
@@ -119,23 +117,8 @@ colon = (text, name, status_id, cont) ->
     memoProc text, name, status_id, reply_to
     return
 
-  ###
-  if (begin_with(text, ":bio ")) {
-    name = text.split(' ')[1]
-    name = name.trim()
-    if (!name) {
-      return
-    }
-    bio(name, cont)
-    return
-  }
-  ###
-
   if begin_with text, ":tenkie"
     t = Math.pow(40 + (Math.random() * 1000), 2)
-    setTimeout(->
-      fav_twitter status_id
-    , t)
     console.log "# : tenki + tenkei"
     tenkei cont
     tenki name, text.split(" ")[1], cont
@@ -177,18 +160,6 @@ colon = (text, name, status_id, cont) ->
       cont msg
     return
 
-  if begin_with(text, ":neko") or begin_with(text, ":neco")
-    number = 322469
-    s_name = text.split(' ')[1] or name
-    shindan number, name, s_name, cont
-    return
-
-  if begin_with(text, ":tateru")
-    number = 196616
-    s_name = text.split(' ')[1] or name
-    shindan number, name, s_name, cont
-    return
-
   if begin_with text, ":trans"
     translate text, (result) ->
       reply_to name, result, status_id
@@ -213,6 +184,10 @@ colon = (text, name, status_id, cont) ->
       msg = "#{title} / #{body}"
       msg = msg.slice(0, 120)
       cont msg
+
+  if begin_with(text, ':y2u ')
+    q = text.split(' ').slice(1).join('%20')
+    youtube q, cont
 
   if begin_with(text, ":lmg ")
     q = text.split(' ').slice(1).join(' ')
@@ -305,26 +280,10 @@ do ->
 
       console.log colored
 
-      if (not is_me(name)) and (rand_fav > Math.random())
-        m = 40 + (Math.random() * 1000)
-        t = m * m
-        setTimeout (-> fav_twitter status_id), t
-
       if text[0] is ':'
         colon text, name, status_id, (result) ->
           reply_to name, result, status_id
         return
-
-      if end_with text, "[検索]"
-          w = text.slice(0, -4).trim()
-          google w, (data) ->
-            lines = data.split('\n').slice(0, -1)
-                        .slice(0, 3)
-                        .join('\n')
-
-            console.warn "# google-search's results:\n#{lines}"
-            reply_to name, lines, status_id
-          return
 
       if text.indexOf('#memo') isnt -1
         text = text.replace(/#memo/g, '')
@@ -340,34 +299,29 @@ do ->
           reply_to name, msg, status_id
           return
 
-      if (text.indexOf("天気教え") isnt -1) or (text.indexOf("洗濯物占") isnt -1)
-        m = 40 + (Math.random() * 1000)
-        t = m * m
-        setTimeout (-> fav_twitter status_id), t
+      if (text.indexOf("おっけー") is 0) and (text.indexOf("天気") > 0)
         tenki name, undefined, (result) ->
           reply_to name, result, status_id
         return
 
-      if /tenkei|TENKEI|тенкей|テンケイ|てんけい|天啓|天恵|添景|点景|天刑|天渓/.test(text)
+      if (text.indexOf('洗濯') >= 0) and (text.indexOf('占い') >= 0)
+        tenki name, undefined, (result) ->
+          reply_to name, result, status_id
+        return
+
+      if (text.indexOf("おっけー") is 0) and (text.indexOf("アニメ") > 0)
+        anime (result) ->
+          util.split result, (140 - 10 - name.length), (frag) ->
+            reply_to name, frag, status_id
+        return
+
+
+      if /tenkei/.test text
         m = 40 + (Math.random() * 1000)
         t = m * m
-        setTimeout (-> fav_twitter status_id), t
         tenkei (res) -> reply_to name, res, status_id
         return
 
-      if text.indexOf("オハヨウゴザイマース") isnt -1
-        m = 40 + (Math.random() * 1000)
-        t = m * m
-        setTimeout (-> fav_twitter status_id), t
-        reply_to(name, "┗(⌒)(╬*☻-☻*╬)(⌒)┛＜ゲットアウト！（出ていけ！）", status_id)
-        return
-
-      if text.indexOf("田端") isnt -1
-        m = 40 + (Math.random() * 1000)
-        t = m * m
-        setTimeout (-> fav_twitter status_id), t
-        setTimeout (-> post_twitter "田端でバタバタ"), 1500
-        return
 
       if (data.user.protected is false) and (Math.random() < 0.03)
         chat.push text, name

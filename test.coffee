@@ -1,18 +1,11 @@
-fs = require 'fs'
-runJ = require './j'
-princess = require './princess_precure.coffee' # precure
+tw = require './mytwitter'
+dot = require './dot'
+console.log dot
 
-do ->
-  cont = console.log
+->
+  succ = (fn) ->
+    console.log "@@@@ #{fn}"
+    tw.twit_with_media '@cympfh test', fn
+  dot.compile "久美子 -> 麗奈 [label=❤️]", succ, (console.warn)
 
-  princess (err, datum) ->
-    if err
-      cont err
-      return
-    title = '#' + datum[0]
-    body = datum[1]
-    msg = "#{title} / #{body}"
-    msg = msg.slice(0, 120)
-    cont msg
-
-
+tw.twit_with_media '@cympfh test', "/tmp/421.png"
