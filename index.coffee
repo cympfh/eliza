@@ -285,7 +285,7 @@ do ->
           reply_to name, result, status_id
         return
 
-      if text.indexOf('#memo') isnt -1
+      if (text.match(/#memo([^0-9A-Za-z]|$)/)) isnt null
         text = text.replace(/#memo/g, '')
         text = text.trim()
         text = ':memo add ' + text
@@ -328,12 +328,6 @@ do ->
 
       if Math.random() < 0.006
         chat.mutter post_twitter
-
-      if (name isnt "ampeloss") and (is_me name) and util.is_reply(text)
-        to_id = data.in_reply_to_status_id_str
-        if to_id
-          destroy_twit to_id
-          return
 
       if (name isnt "ampeloss") and util.is_reply(text)
         console.warn "# this is a reply to me:", text
