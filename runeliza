@@ -1,4 +1,6 @@
-# ./ngram-train
+#!/bin/bash
+
+echo -ne "\eke\e\\"
 while :
 do
   rm /tmp/anime-*
