@@ -25,7 +25,6 @@ happiness = require './happiness' # precure
 princess = require './princess_precure.coffee' # precure
 lmgtfy   = require './lmgtfy' # let me Google
 lgtm     = require './lgtm' # look good to me
-ej       = require './ej'
 bio      = require './bio'
 cood     = require './cood'
 google   = require './google'
@@ -165,6 +164,11 @@ colon = (text, name, status_id, cont) ->
       reply_to name, result, status_id
     return
 
+  if begin_with text, ":ej "
+    translate (text.replace('ej', 'trans en ja')), (result) ->
+      reply_to name, result, status_id
+    return
+
   if begin_with(text, ":shindan ")
     number = parseInt text.split(" ")[1].trim(), 10
     s_name = text.split(' ')[1] or name
@@ -197,10 +201,6 @@ colon = (text, name, status_id, cont) ->
 
   if begin_with(text, ":lgtm")
     lgtm cont
-
-  if begin_with(text, ":ej ")
-    q = text.split(' ')[1]
-    ej q, cont
 
   if begin_with(text, ":co ")
     cood text.slice(4), (lat, lng, loc) ->
