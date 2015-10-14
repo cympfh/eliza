@@ -6,8 +6,6 @@ fs       = require "fs"
 util     = require './lib/util'
 curl     = require './curl'
 chat     = require './chat'
-mail     = require './mail'
-mail_alias = require './mail-alias'
 translate = require './translate'
 zapping  = require './zapping'
 tenki    = require './tenki'
@@ -220,17 +218,6 @@ colon = (text, name, status_id, cont) ->
   if begin_with(text, ":echo ")
     cont text.slice(6)
     return
-
-  if begin_with(text, ":mail ")
-    qs = text.split(' ')
-    command = qs.slice(1).join(' ')
-    if command[0] isnt ':'
-      command = ':' + command
-    colon command, name, status_id, (result) ->
-      to = mail_alias name, "#{name}@gmail.com"
-      mail to, command, result
-      console.warn "# mail", command, to, result
-      cont "mail \"#{result}\""
 
   if begin_with(text, ":cal")
     q = text.split(' ').slice(1).join('')
