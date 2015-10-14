@@ -302,6 +302,8 @@ do ->
             reply_to name, frag, status_id
         return
 
+      if (text.indexOf('人間') isnt -1) and (text.length < 7)
+        post_twitter text.replace(/人間/g, 'ゆゆ式')
 
       if /tenkei/.test text
         m = 40 + (Math.random() * 1000)
