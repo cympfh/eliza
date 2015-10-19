@@ -10,6 +10,7 @@ translate = require './translate'
 zapping  = require './zapping'
 tenki    = require './tenki'
 zoi      = require './zoi'
+voice    = require  './voice'
 calendar = require  './calendar'
 misdo    = require './misdo'
 anime    = require './anime'
@@ -219,12 +220,22 @@ colon = (text, name, status_id, cont) ->
     cont text.slice(6)
     return
 
-  if begin_with(text, ":cal")
+  if begin_with text, ":voice"
+    # bash injection!
+    text = text.replace /\&/g, ''
+    text = text.replace /\;/g, ''
+    text = text.replace /\|/g, ''
     q = text.split(' ').slice(1).join('')
-    q = q.replace /\&/g, ''
-    q = q.replace /\;/g, ''
-    q = q.replace /\|/g, ''
-    calendar q, cont
+    voice q, cont
+    return
+
+  if begin_with text, ':cal'
+    # bash injection!
+    text = text.replace /\&/g, ''
+    text = text.replace /\;/g, ''
+    text = text.replace /\|/g, ''
+    args = text.split(' ').slice(1)
+    calendar args, cont
     return
 
 ## setup
