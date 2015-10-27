@@ -1,89 +1,44 @@
-## N-gram model
-# use previous N-1 words (chars) as key for the next 1 word (char)
-#
+model = require './model/model.json'
 
-fs = require 'fs'
-ngram = (require 'nltk').ngram
-{warn} = console
+is_false = (s) -> (s is false) or (s is 'false')
 
-train_path = './ngram/train.txt'
-model_path = './ngram/model.json'
 
-__BOS__ = true
-__EOS__ = false
+smooth = (n, c) ->
+  if is_false c
+    return n
+  n = 1 + Math.pow(n, 1/10)
+  n |= 0
+  n
 
-N = 5
-gram = new ngram N
+choose_next_char = (a) ->
+  console.assert a.length is 4
+  n = 0
+  for c of model[a]
+    n += smooth model[a][c], c
+  return false if n is 0
+  m = (Math.random() * n) | 0
+  for c of model[a]
+    if m <= 0
+      return c
+    m -= model[a][c]
+  return c
 
-table = {}
-
-train = (path, model) ->
-
-  add_table = (datum) ->
-    datum.forEach (d) ->
-      key = d.slice 0, -1
-        .join ''
-      val = d[d.length - 1]
-      if table[key]
-        if table[key][val]
-          ++table[key][val]
-        else
-          table[key][val] = 1
-      else
-        table[key] = {}
-        table[key][val] = 1
-
-  datum =
-    fs.readFileSync path, 'utf8'
-      .split '\n'
-      .slice 0, -1
-      .map ((l) -> (__BOS__ for i in [2 .. N]) .concat (l.split '') .concat [__EOS__])
-
-  datum
-    .forEach (d) -> add_table gram.enum d
-
-  fs.writeFile model, (JSON.stringify table), (() -> warn "DONE TRAIN")
-
-load = (path) ->
-  table = require path
-  warn "DONE LOAD"
-
-make = () ->
+make = ->
   sen = []
-  u = (true for i in [2 .. N])
-  prod = 1
-  threshold = 0.0000032
-  threshold = 0.00000000032
+  a = [true, true, true, true]
+  c = true
+  loop
+    c = choose_next_char a
+    break if is_false c
+    a.push c
+    a = a[-4 ..]
+    sen.push c
+    if sen.length > 100
+      return make()
+  sen.join ''
 
-  while true
-    [v, pr] = choose table[u.join '']
-    prod *= pr
-    u = u .concat [v]
-    u = u.slice (- N + 1)
-    if not v or v is __EOS__.toString()
-      break
-    sen .push v
-
-  sen = sen.join ''
-
-  if prod < threshold or sen.length < 5
-    do make
-  else
-    return sen
-
-choose = (subt) ->
-  total = 0
-  for tar, count of subt
-    total += count
-  r = Math.random() * total
-  for tar, count of subt
-    r -= count
-    if r < 0
-      return [tar, count / total]
+if process.argv[2] == 'test'
+  console.log make()
 
 module.exports =
   make: make
-  load: load
-  train: train
-  model_path: model_path
-  train_path: train_path
