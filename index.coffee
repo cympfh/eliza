@@ -313,15 +313,17 @@ do ->
             reply_to name, frag, status_id
         return
 
-      if (text.indexOf('人間') isnt -1) and (text.length < 7)
-        post_twitter text.replace(/人間/g, 'ゆゆ式')
+      if (text.indexOf('人間') isnt -1) and (text.length < 20)
+        if 0.5 < Math.random()
+          post_twitter text.replace(/人間/g, 'ゆゆ式')
+        else
+          post_twitter text.replace(/人間/g, '論文')
 
       if /tenkei/.test text
         m = 40 + (Math.random() * 1000)
         t = m * m
         tenkei (res) -> reply_to name, res, status_id
         return
-
 
       if (data.user.protected is false) and (Math.random() < 0.03)
         chat.push text, name
