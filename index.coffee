@@ -170,8 +170,8 @@ colon = (text, name, status_id, cont) ->
 
   if begin_with(text, ":shindan ")
     number = parseInt text.split(" ")[1].trim(), 10
-    s_name = text.split(' ')[1] or name
-    shindan number, name, s_name, cont
+    s_name = text.split(' ')[2] or name
+    shindan number, s_name, cont
     return
 
   if begin_with(text, ":test")
