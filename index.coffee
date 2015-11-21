@@ -313,11 +313,11 @@ do ->
             reply_to name, frag, status_id
         return
 
-      if (text.indexOf('人間') isnt -1) and (text.length < 20)
-        if 0.5 < Math.random()
+      if (text.indexOf('人間') isnt -1) and (text.length <= 4) and (name isnt 'minamo__i')
+        if Math.random() < 0.8
           post_twitter text.replace(/人間/g, 'ゆゆ式')
         else
-          post_twitter text.replace(/人間/g, '論文')
+          post_twitter text.replace(/人間/g, 'あいうら')
 
       if /tenkei/.test text
         m = 40 + (Math.random() * 1000)
@@ -350,7 +350,7 @@ do ->
       console.log "### stream close"
       do suicide
 
-    stream.on "error", ->
+    stream.on "error", (e) ->
       console.log "### emitted an error", e
       do suicide
 
