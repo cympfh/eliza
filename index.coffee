@@ -31,6 +31,7 @@ dice = require './dice'
 {twit, post_twitter, reply_to, twit_with_media, destroy_twit} = require './mytwitter'
 youtube = require './youtube'
 dot     = require './dot'
+trainline=require './trainline'
 
 esc = String.fromCharCode 27
 
@@ -318,6 +319,10 @@ do ->
           post_twitter text.replace(/人間/g, 'ゆゆ式')
         else
           post_twitter text.replace(/人間/g, 'あいうら')
+
+      if (text.length <= 6) and (text.split('').reverse()[0] == '線')
+        trainline.test text, (line) ->
+          reply_to name, line, status_id
 
       if /tenkei/.test text
         m = 40 + (Math.random() * 1000)
