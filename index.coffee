@@ -26,7 +26,6 @@ lmgtfy   = require './lmgtfy' # let me Google
 lgtm     = require './lgtm' # look good to me
 bio      = require './bio'
 cood     = require './cood'
-google   = require './google'
 dice = require './dice'
 {twit, post_twitter, reply_to, twit_with_media, destroy_twit} = require './mytwitter'
 youtube = require './youtube'
@@ -133,19 +132,6 @@ colon = (text, name, status_id, cont) ->
 
   if begin_with text, ":twitpic"
     twitpic cont
-    return
-
-  if begin_with text, ':?'
-    `text = text.replace(/　/g, ' ')`
-    w = text.slice(2).trim().replace(/\s/g, '+')
-    console.warn "? google with #{w}"
-    google w, (data) ->
-      lines = data.split('\n').slice(0, -1)
-                  .slice(0, 3)
-                  .join('\n')
-
-      console.warn "? results:\n#{lines}"
-      cont lines
     return
 
   if begin_with text, ":kositu"
