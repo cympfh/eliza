@@ -3,7 +3,6 @@
 echo -ne "\eke\e\\"
 while :
 do
-  rm /tmp/anime-*
   coffee index.coffee
   echo "broken? restart after 30 sec"
   sleep 30
