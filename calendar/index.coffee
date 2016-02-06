@@ -1,4 +1,5 @@
 {exec} = require 'child_process'
+calendar='/usr/bin/calendar'
 
 main = (args, cont) ->
   switch
@@ -8,7 +9,7 @@ main = (args, cont) ->
       exec "grep '#{args[1]}' ./calendar/main.calendar", (er, ou) ->
         cont ou
     else
-      exec "calendar -A 0 -f ./calendar/main.calendar #{args.join ' '}", (er,ou) ->
+      exec "#{calendar} -A 0 -f ./calendar/main.calendar #{args.join ' '}", (er,ou) ->
         cont ou
 
 if process.argv[2] is 'test'

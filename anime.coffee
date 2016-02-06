@@ -5,7 +5,6 @@ tmphtml = '/tmp/alist.html'
 tmp = '/tmp/alist'
 url = 'http://www.posite-c.com/anime/day/'
 
-
 cache = (cont) ->
   tokyo = (x) ->
     return false if x.indexOf('BS-') isnt -1
@@ -66,6 +65,7 @@ cache = (cont) ->
     x
 
   command = "curl #{url} |grep \"<table id=\\\"today\\\"\" > /tmp/ls"
+  console.warn command
   exec command, (err) ->
     throw err if err
     fs.readFile '/tmp/ls', 'utf8', (err, ls) ->
@@ -103,11 +103,13 @@ anime_cache_loop = ->
   hr = now.getHours()
   if hr < 12
     console.warn "* making new anime cache"
-    fs.unlinkSync tmp
-    fs.unlinkSync tmphtml
+    if fs.existsSync tmp
+      fs.unlinkSync tmp
+    if fs.existsSync tmphtml
+      fs.unlinkSync tmphtml
     cache (->)
-
-#setInterval anime_cache_loop, 30*60*1000
+  setTimeout anime_cache_loop, 30*60*1000
+#do anime_cache_loop
 
 anime = (cont) ->
   fs.readFile tmp, (err, buf) ->
