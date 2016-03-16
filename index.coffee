@@ -101,7 +101,6 @@ colon = (text, name, status_id, cont) ->
     return
 
   if begin_with text, ":anime"
-    return
     anime (result) ->
       util.split result, (140 - 10 - name.length), (frag) ->
         cont frag
