@@ -33,5 +33,6 @@ tenki = (name, loc, cont) ->
 if process.argv[2] is 'test'
   tenki 'cympfh', 'tokyo', console.warn
   tenki 'cympfh', '神戸', console.warn
+  tenki 'cympfh', '広島', console.warn
 
 module.exports = tenki
