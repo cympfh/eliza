@@ -20,17 +20,16 @@ twitpic  = require './twitpic'
 kasitime = require './kasitime'
 {shindan, tenkei} = require './shindan'
 memoProc = require './memo.coffee'
-happiness = require './happiness' # precure
-princess = require './princess_precure.coffee' # precure
 lmgtfy   = require './lmgtfy' # let me Google
 lgtm     = require './lgtm' # look good to me
 bio      = require './bio'
 cood     = require './cood'
-dice = require './dice'
+dice     = require './dice'
 {twit, post_twitter, reply_to, twit_with_media, destroy_twit} = require './mytwitter'
 youtube = require './youtube'
 dot     = require './dot'
 trainline=require './trainline'
+precure  = require './precure'
 
 esc = String.fromCharCode 27
 
@@ -165,15 +164,10 @@ colon = (text, name, status_id, cont) ->
   if begin_with(text, ":test")
     return test cont
 
-  if begin_with(text, ':prin') or begin_with(text, ':prec')
-    princess (err, datum) ->
-      if err
-        cont err
-        return
-      title = '#' + datum[0]
-      body = datum[1]
-      msg = "#{title} / #{body}"
-      msg = msg.slice(0, 120)
+  if begin_with(text, ':prec')
+    precure (result) ->
+      msg = "http://www.asahi.co.jp/precure/maho/story/\n#{result}"
+      msg = msg.slice(0, 127)
       cont msg
 
   if begin_with(text, ':y2u ')
