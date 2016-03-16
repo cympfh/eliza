@@ -15,7 +15,6 @@ calendar  = require  './calendar'
 misdo     = require './misdo'
 anime     = require './anime'
 fanime    = require './flavored-anime'
-runJ      = require './j'
 twitpic   = require './twitpic'
 kasitime  = require './kasitime'
 memoProc  = require './memo.coffee'
@@ -88,17 +87,6 @@ colon = (text, name, status_id, cont) ->
     fail = (err) ->
       reply_to name, err.toString(), status_id
     dot.compile code, succ, fail
-
-  if begin_with text, ":j "
-    code = text.slice(3).split('\n')[0]
-    fname = "/tmp/jcode"
-    fs.writeFile fname, code, (err) ->
-      if err
-        console.warn err
-      else
-        runJ fname, (result) ->
-          cont "\n#{result}"
-    return
 
   if begin_with text, ":anime"
     anime (result) ->
