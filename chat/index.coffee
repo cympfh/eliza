@@ -1,5 +1,5 @@
 pp = require './poppush'
-{make} = require './ngram'
+{gen} = require './ngram'
 
 reply = (text, cont) ->
 
@@ -9,13 +9,13 @@ reply = (text, cont) ->
   if (Math.random() < 0.8) and (pp.popp())
     pp.pop cont
   else
-    cont make()
+    cont gen()
 
 mutter = (cont) ->
   if (Math.random() < 0.1) and (pp.popp())
     pp.pop cont
   else
-    cont make()
+    cont gen()
 
 module.exports =
   push: pp.push

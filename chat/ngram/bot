@@ -1,0 +1,8 @@
+#!/bin/bash
+
+while :; do
+  tw-cd ampeloss
+  ruby ./main.rb cympfh yukari | tw
+
+  sleep $(( $RANDOM % 2 ))
+done
