@@ -1,6 +1,6 @@
 fs = require 'fs'
 {exec} = require 'child_process'
-me = require '../me.json'
+me = require './me.json'
 Twitter = require "ntwitter"
 twit = new Twitter(me)
 
