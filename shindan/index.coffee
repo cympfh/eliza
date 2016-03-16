@@ -11,7 +11,7 @@ shindan = (number, s_name, cont) ->
   url = "http://shindanmaker.com/#{number}"
   console.log "shindan", number, s_name, u_name
 
-  command = "bash ./shindan/send.sh #{number} #{u_name.replace(/\\/g, "\\\\")}"
+  command = "bash #{__dirname}/send.sh #{number} #{u_name.replace(/\\/g, "\\\\")}"
   exec command, (err, out) ->
     throw err if err
     out = out.replace u_name, s_name
