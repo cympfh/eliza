@@ -1,7 +1,7 @@
 fs = require 'fs'
 {exec} = require 'child_process'
-Twitter  = require "ntwitter"
-me = require('../setting.json').users.ampeloss
+me = require '../eliza.json'
+Twitter = require "ntwitter"
 twit = new Twitter(me)
 
 barrier = do ->
