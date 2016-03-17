@@ -288,7 +288,7 @@ do ->
         else
           post_twitter text.replace(/人間/g, 'あいうら')
 
-      if (text.length <= 6) and (text.split('').reverse()[0] == '線')
+      if (text.length <= 20) and (text.split('').reverse()[0] == '線')
         trainline.test text, (line) ->
           reply_to name, line, status_id
 
