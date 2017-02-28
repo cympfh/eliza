@@ -210,119 +210,119 @@ colon = (text, name, status_id, cont) ->
 do ->
     twit.stream 'user', (stream) ->
 
-    ###
-    stream.on 'delete', (data) ->
-      data.status.id_str
-    ###
+        ###
+        stream.on 'delete', (data) ->
+          data.status.id_str
+        ###
 
-    stream.on 'disconnect', (data) ->
-        console.log data.reason
-        do suicide
+        stream.on 'disconnect', (data) ->
+            console.log data.reason
+            do suicide
 
-    stream.on 'data', (data) ->
+        stream.on 'data', (data) ->
 
-        if (not data) or (not data.user) or (not data.text)
-            return
+            if (not data) or (not data.user) or (not data.text)
+                return
 
-        last_time = (new Date()).getTime()
+            last_time = (new Date()).getTime()
 
-        user = data.user
-        name = user.screen_name
-        nick = user.name
-        text = data.text
-                   .replace(/&lt;/g, "<")
-                   .replace(/&gt;/g, ">")
-                   .replace(/&amp;/g, "&")
-                   .replace(`/　/g`, ' ')
-                   .replace(/\s{2}/g, ' ')
-                   .trim()
-        status_id = data.id_str
-        source = data.source.slice(data.source.indexOf(">") + 1, data.source.length - 4)
+            user = data.user
+            name = user.screen_name
+            nick = user.name
+            text = data.text
+                       .replace(/&lt;/g, "<")
+                       .replace(/&gt;/g, ">")
+                       .replace(/&amp;/g, "&")
+                       .replace(`/　/g`, ' ')
+                       .replace(/\s{2}/g, ' ')
+                       .trim()
+            status_id = data.id_str
+            source = data.source.slice(data.source.indexOf(">") + 1, data.source.length - 4)
 
-        colored = """
+            colored = """
 #{esc}[34m@#{name} / #{nick}#{esc}[m ; #{esc}[33mvia #{source}#{esc}[m ; #{str_time()}
 #{text}
-"""
+    """
 
-        console.log colored
+            console.log colored
 
-        return if name is 'ampeloss'
+            return if name is 'ampeloss'
 
-        if text[0] is ':'
-            colon text, name, status_id, (result) ->
-                reply_to name, result, status_id
-            return
+            if text[0] is ':'
+                colon text, name, status_id, (result) ->
+                    reply_to name, result, status_id
+                return
 
-        if (text.match(/#memo([^0-9A-Za-z]|$)/)) isnt null
-          text = text.replace(/#memo/g, '')
-          text = text.trim()
-          text = ':memo add ' + text
-          console.warn "transfer to #{text}"
-          return colon text, name, status_id, (result) ->
-              reply_to name, result, status_id
-
-        if (text.indexOf("おっけー") is 0) and (text.indexOf("天気") > 0)
-            tenki name, undefined, (result) ->
+            if (text.match(/#memo([^0-9A-Za-z]|$)/)) isnt null
+              text = text.replace(/#memo/g, '')
+              text = text.trim()
+              text = ':memo add ' + text
+              console.warn "transfer to #{text}"
+              return colon text, name, status_id, (result) ->
                   reply_to name, result, status_id
-            return
 
-        if (text.indexOf('洗濯') >= 0) and (text.indexOf('占い') >= 0)
-            tenki name, undefined, (result) ->
-                reply_to name, result, status_id
-            return
+            if (text.indexOf("おっけー") is 0) and (text.indexOf("天気") > 0)
+                tenki name, undefined, (result) ->
+                      reply_to name, result, status_id
+                return
 
-        if (text.indexOf("おっけー") is 0) and (text.indexOf("アニメ") > 0)
-            anime (result) ->
-                util.split result, (140 - 10 - name.length), (frag) ->
-                reply_to name, frag, status_id
-            return
+            if (text.indexOf('洗濯') >= 0) and (text.indexOf('占い') >= 0)
+                tenki name, undefined, (result) ->
+                    reply_to name, result, status_id
+                return
 
-        if (text.indexOf('人間') isnt -1) and (text.length <= 4) and (name isnt 'minamo__i')
-            if Math.random() < 0.8
-                post_twitter text.replace(/人間/g, 'ゆゆ式')
-            else
-                post_twitter text.replace(/人間/g, 'あいうら')
+            if (text.indexOf("おっけー") is 0) and (text.indexOf("アニメ") > 0)
+                anime (result) ->
+                    util.split result, (140 - 10 - name.length), (frag) ->
+                    reply_to name, frag, status_id
+                return
 
-        if (text.length <= 20) and (text.split('').reverse()[0] == '線')
-            trainline.test text, (line) ->
-                reply_to name, line, status_id
+            if (text.indexOf('人間') isnt -1) and (text.length <= 4) and (name isnt 'minamo__i')
+                if Math.random() < 0.8
+                    post_twitter text.replace(/人間/g, 'ゆゆ式')
+                else
+                    post_twitter text.replace(/人間/g, 'あいうら')
 
-        if (/tenkei/.test text) or (/天啓/.test text)
-            m = 40 + (Math.random() * 1000)
-            t = m * m
-            tenkei (res) -> reply_to name, res, status_id
-            return
+            if (text.length <= 20) and (text.split('').reverse()[0] == '線')
+                trainline.test text, (line) ->
+                    reply_to name, line, status_id
 
-        if (data.user.protected is false) and (Math.random() < 0.03)
-            chat.push text, name
+            if (/tenkei/.test text) or (/天啓/.test text)
+                m = 40 + (Math.random() * 1000)
+                t = m * m
+                tenkei (res) -> reply_to name, res, status_id
+                return
 
-        if Math.random() < 0.006
-            chat.mutter post_twitter
+            if (data.user.protected is false) and (Math.random() < 0.03)
+                chat.push text, name
 
-        if Math.random() < 0.006
-            fav_twitter status_id
+            if Math.random() < 0.006
+                chat.mutter post_twitter
 
-        if util.is_reply(text)
-           console.warn "# this is a reply to me:", text
-           setTimeout ->
-               chat.reply text, (msg) ->
-                   reply_to name, msg, status_id
-           , 1000 + Math.random() * 10000 | 0
+            if Math.random() < 0.006
+                fav_twitter status_id
 
-    stream.on 'end', ->
-        console.log "### stream end"
-        do suicide
+            if util.is_reply(text)
+               console.warn "# this is a reply to me:", text
+               setTimeout ->
+                   chat.reply text, (msg) ->
+                       reply_to name, msg, status_id
+               , 1000 + Math.random() * 10000 | 0
 
-    stream.on 'destroy', ->
-        console.log "### stream destroy"
-        do suicide
+        stream.on 'end', ->
+            console.log "### stream end"
+            do suicide
 
-    stream.on "close", ->
-        console.log "### stream close"
-        do suicide
+        stream.on 'destroy', ->
+            console.log "### stream destroy"
+            do suicide
 
-    stream.on "error", (e) ->
-        console.log "### emitted an error", e
-        do suicide
+        stream.on "close", ->
+            console.log "### stream close"
+            do suicide
 
-  console.log("### stream start")
+        stream.on "error", (e) ->
+            console.log "### emitted an error", e
+            do suicide
+
+      console.log("### stream start")
