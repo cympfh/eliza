@@ -303,12 +303,12 @@ do ->
       if Math.random() < 0.006
         chat.mutter post_twitter
 
-      #if (name isnt "ampeloss") and util.is_reply(text)
-      #  console.warn "# this is a reply to me:", text
-      #  setTimeout ->
-      #    chat.reply text, (msg) ->
-      #      reply_to name, msg, status_id
-      #  , 1000 + Math.random() * 10000 | 0
+      if (name isnt "ampeloss") and util.is_reply(text)
+       console.warn "# this is a reply to me:", text
+       setTimeout ->
+         chat.reply text, (msg) ->
+           reply_to name, msg, status_id
+       , 1000 + Math.random() * 10000 | 0
 
     stream.on 'end', ->
       console.log "### stream end"
