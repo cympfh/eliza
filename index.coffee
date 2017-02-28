@@ -99,8 +99,11 @@ colon = (text, name, status_id, cont) ->
 
     if begin_with text, ':eval'
         if is_me(name)
-            result = eval(text.slice(6))
-            cont result
+            try
+                result = eval(text.slice(6))
+                cont result
+            catch e
+                cont e.toString().slice(0, 100)
         return
 
     if begin_with text, ":memo"

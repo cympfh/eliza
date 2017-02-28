@@ -2,7 +2,6 @@
 
 youtube = (query, cont) ->
     command = "w3m  -dump_source 'https://www.youtube.com/results?search_query=#{query}' |gunzip -d| grep '/watch?'"
-    console.warn command
     exec command, (er, out) ->
         throw er if er
         re = /^.*href=\"\/watch\?v=([^\"]*)\".* title=\"([^\"])*\"/
