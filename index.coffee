@@ -57,7 +57,7 @@ suicide = ->
     process.exit()
 
 is_me = (name) ->
-    name in ["ampeloss", "cympfh", "unddich"]
+    name in ['ampeloss', 'cympfh', 'unddich', 'acympfh']
 
 # -------- stream living?
 
@@ -95,6 +95,12 @@ colon = (text, name, status_id, cont) ->
 
     if begin_with text, ":misdo"
         misdo (msg) -> reply_to name, msg, status_id
+        return
+
+    if begin_with text, ':eval'
+        if is_me(name)
+            result = eval(text.slice(6))
+            cont result
         return
 
     if begin_with text, ":memo"
