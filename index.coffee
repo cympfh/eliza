@@ -16,7 +16,6 @@ misdo     = require './misdo'
 anime     = require './anime'
 twitpic   = require './twitpic'
 kasitime  = require './kasitime'
-memoProc  = require './memo.coffee'
 lmgtfy    = require './lmgtfy' # let me Google
 lgtm      = require './lgtm' # look good to me
 bio       = require './bio'
@@ -89,8 +88,8 @@ colon = (text, name, status_id, cont) ->
 
     if begin_with text, ":anime"
         anime (result) ->
-        util.split result, (140 - 10 - name.length), (frag) ->
-            cont frag
+            util.split result, (140 - 10 - name.length), (frag) ->
+                cont frag
         return
 
     if begin_with text, ":misdo"
@@ -104,10 +103,6 @@ colon = (text, name, status_id, cont) ->
                 cont result
             catch e
                 cont e.toString().slice(0, 100)
-        return
-
-    if begin_with text, ":memo"
-        memoProc text, name, status_id, reply_to
         return
 
     if begin_with text, ":tenkie"
@@ -262,14 +257,6 @@ do ->
                     reply_to name, result, status_id
                 return
 
-            if (text.match(/#memo([^0-9A-Za-z]|$)/)) isnt null
-              text = text.replace(/#memo/g, '')
-              text = text.trim()
-              text = ':memo add ' + text
-              console.warn "transfer to #{text}"
-              return colon text, name, status_id, (result) ->
-                  reply_to name, result, status_id
-
             if (text.indexOf("おっけー") is 0) and (text.indexOf("天気") > 0)
                 tenki name, undefined, (result) ->
                       reply_to name, result, status_id
@@ -309,14 +296,16 @@ do ->
                 chat.mutter post_twitter
 
             if Math.random() < 0.006
-                fav_twitter status_id
+                setTimeout ->
+                    fav_twitter status_id
+                , 1000 + Math.random() * 10000 | 0
 
             if util.is_reply(text)
-               console.warn "# this is a reply to me:", text
-               setTimeout ->
-                   chat.reply text, (msg) ->
-                       reply_to name, msg, status_id
-               , 1000 + Math.random() * 10000 | 0
+                console.warn "# this is a reply to me:", text
+                setTimeout ->
+                    chat.reply text, (msg) ->
+                        reply_to name, msg, status_id
+                , 1000 + Math.random() * 10000 | 0
 
         stream.on 'end', ->
             console.log "### stream end"
