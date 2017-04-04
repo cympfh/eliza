@@ -4,8 +4,7 @@ int = (x) ->
   if x is '-' then null else (x|0)
 
 parse = (id, cont) ->
-  url = "http://weather.goo.ne.jp/area/#{id}.html"
-  console.warn url
+  url = "https://weather.goo.ne.jp/area/#{id}.html"
 
   result =
     today:
