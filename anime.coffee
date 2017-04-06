@@ -1,7 +1,7 @@
 {exec} = require 'child_process'
 
 anime = (cont) ->
-    command = 'annict calendar | head -n 8 | cut -f 2-5'
+    command = 'animetick'
     exec command, (err, out) ->
         if err
             cont err
