@@ -1,7 +1,7 @@
 {exec} = require 'child_process'
 
 anime = (cont) ->
-    command = 'animetick'
+    command = 'animetick| sed "s,^[0-9]*/,,g"| ruby -ne "puts \\$_[0..31]"'
     exec command, (err, out) ->
         if err
             cont err
