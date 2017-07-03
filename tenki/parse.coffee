@@ -17,7 +17,8 @@ parse = (id, cont) ->
       rain: -1
 
   # 気温
-  exec "curl -s #{url} | grep ℃ | head -2 | grep -o '>[0-9]*℃' | grep -o '[0-9]*'", (err, out) ->
+  exec "curl -s #{url}|grep '&deg;C'|sed 's/<[^>]*>//g;s/[+-][0-9]*//g'|grep -o '[0-9]*'|head -4", (err, out) ->
+
     [a,b,c,d] = out.split('\n').map(int)
     result.today.max    = a
     result.today.min    = b
