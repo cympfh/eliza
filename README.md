@@ -1,11 +1,6 @@
 a Twitter bot
 ---
 
-this repository is
-a doc
-for
-@ampeloss
+This project is obsolete. see https://github.com/cympfh/ampeloss
 
----
-
-[@ampeloss](http://twitter.com/ampeloss "Twitter, @ampeloss")
+[@ampeloss](http://twitter.com/ampeloss)
